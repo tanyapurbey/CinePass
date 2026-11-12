@@ -4,7 +4,7 @@
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5-brightgreen.svg?style=flat&logo=springboot)](https://spring.io/projects/spring-boot)
 [![React](https://img.shields.io/badge/React-19-blue.svg?style=flat&logo=react)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38B2AC.svg?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0-blue.svg?style=flat&logo=mysql)](https://www.mysql.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16%2F18-336791.svg?style=flat&logo=postgresql)](https://www.postgresql.org/)
 [![JWT](https://img.shields.io/badge/JWT-Secured-black.svg?style=flat&logo=jsonwebtokens)](https://jwt.io/)
 
 > **CinePass** is an enterprise-grade movie reservation and ticket booking platform designed with a high-performance Spring Boot backend and an interactive React frontend. Features include concurrent seat locking, role-based access control (RBAC), stateless JWT authentication, and transactional booking pipelines.
@@ -65,7 +65,7 @@
                                      │
                                      ▼
                   ┌────────────────────────────────────────┐
-                  │             MySQL Database             │
+                  │          PostgreSQL Database           │
                   └────────────────────────────────────────┘
 ```
 
@@ -136,20 +136,20 @@ CinePass/
 ### Prerequisites
 - **Java Development Kit (JDK)**: 21 or higher
 - **Node.js**: v18 or higher & **npm**
-- **MySQL Server**: 8.0 or higher
+- **PostgreSQL**: 14 or higher (or pgAdmin)
 
 ---
 
 ### 1. Database Setup
-Create a MySQL database (or let Spring Boot auto-create it):
+Create a PostgreSQL database:
 ```sql
-CREATE DATABASE IF NOT EXISTS cinepass_db;
+CREATE DATABASE cinepass_db;
 ```
 
 Update your credentials in `src/main/resources/application.properties` if needed:
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/cinepass_db?createDatabaseIfNotExist=true
-spring.datasource.username=root
+spring.datasource.url=jdbc:postgresql://localhost:5432/cinepass_db
+spring.datasource.username=postgres
 spring.datasource.password=your_password
 ```
 

@@ -1,4 +1,4 @@
-﻿import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FiFilm } from 'react-icons/fi'
 
 export default function Footer() {

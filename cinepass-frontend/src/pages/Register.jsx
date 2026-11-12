@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FiFilm } from 'react-icons/fi'
 import { authService } from '../api/authService'

@@ -1,4 +1,4 @@
-﻿export const TOKEN_KEY = 'cinepass_token'
+export const TOKEN_KEY = 'cinepass_token'
 export const USER_KEY = 'cinepass_user'
 
 export const ROLES = {

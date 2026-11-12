@@ -1,4 +1,4 @@
-﻿import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FiArrowRight, FiCalendar, FiSearch, FiShield } from 'react-icons/fi'
 import Button from '../components/ui/Button'
 import { useAuth } from '../context/AuthContext'

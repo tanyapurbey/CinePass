@@ -1,4 +1,4 @@
-﻿import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { FiFilm, FiMenu, FiX, FiLogOut } from 'react-icons/fi'
 import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'

@@ -1,4 +1,4 @@
-﻿import axios from 'axios'
+import axios from 'axios'
 import { TOKEN_KEY } from '../utils/constants'
 
 const api = axios.create({

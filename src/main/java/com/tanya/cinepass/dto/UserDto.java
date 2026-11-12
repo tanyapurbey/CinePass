@@ -1,4 +1,4 @@
-﻿package com.tanya.cinepass.dto;
+package com.tanya.cinepass.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

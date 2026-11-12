@@ -1,4 +1,4 @@
-﻿package com.tanya.cinepass.controller;
+package com.tanya.cinepass.controller;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,4 +1,4 @@
-﻿package com.tanya.cinepass.scheduler;
+package com.tanya.cinepass.scheduler;
 
 import lombok.RequiredArgsConstructor;
 

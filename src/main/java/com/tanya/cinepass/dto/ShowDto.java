@@ -1,4 +1,4 @@
-﻿package com.tanya.cinepass.dto;
+package com.tanya.cinepass.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

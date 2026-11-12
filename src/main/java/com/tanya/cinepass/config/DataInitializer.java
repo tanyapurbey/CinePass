@@ -1,4 +1,4 @@
-﻿package com.tanya.cinepass.config;
+package com.tanya.cinepass.config;
 
 import com.tanya.cinepass.model.Role;
 import com.tanya.cinepass.model.User;

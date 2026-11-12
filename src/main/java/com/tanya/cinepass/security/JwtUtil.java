@@ -1,4 +1,4 @@
-﻿package com.tanya.cinepass.security;
+package com.tanya.cinepass.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

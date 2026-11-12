@@ -1,4 +1,4 @@
-﻿package com.tanya.cinepass.repository;
+package com.tanya.cinepass.repository;
 
 import com.tanya.cinepass.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

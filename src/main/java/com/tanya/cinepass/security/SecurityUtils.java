@@ -1,4 +1,4 @@
-﻿package com.tanya.cinepass.security;
+package com.tanya.cinepass.security;
 
 import com.tanya.cinepass.model.Role;
 import org.springframework.security.access.AccessDeniedException;

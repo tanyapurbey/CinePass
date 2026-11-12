@@ -1,4 +1,4 @@
-﻿package com.tanya.cinepass.Exception;
+package com.tanya.cinepass.Exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

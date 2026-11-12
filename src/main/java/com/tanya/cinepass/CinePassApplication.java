@@ -1,4 +1,4 @@
-﻿package com.tanya.cinepass;
+package com.tanya.cinepass;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

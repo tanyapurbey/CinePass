@@ -1,4 +1,4 @@
-﻿package com.tanya.cinepass.model;
+package com.tanya.cinepass.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

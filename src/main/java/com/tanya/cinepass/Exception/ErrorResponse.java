@@ -1,4 +1,4 @@
-﻿package com.tanya.cinepass.Exception;
+package com.tanya.cinepass.Exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

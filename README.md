@@ -8,7 +8,9 @@
 [![JWT](https://img.shields.io/badge/JWT-Secured-black.svg?style=flat&logo=jsonwebtokens)](https://jwt.io/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-> **CinePass** is a high-concurrency movie reservation platform engineered with a **Spring Boot 3** backend and a **React 19** frontend. It features database-level pessimistic seat locking, automated background lock expiration scheduling, role-based access control (RBAC), and interactive Swagger API documentation.
+> **CinePass** is an enterprise-grade, high-concurrency movie reservation and ticket booking platform engineered with a **Spring Boot 3** backend and an interactive **React 19** frontend. Features include database-level pessimistic seat locking, automated background lock expiration scheduling, stateless JWT authentication, role-based access control (RBAC), and transactional booking pipelines.
+
+![CinePass Preview](image.png)
 
 ---
 

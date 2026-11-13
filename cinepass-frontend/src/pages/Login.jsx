@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { FiFilm, FiLock, FiMail } from 'react-icons/fi'
+import { FiFilm, FiShield, FiUserCheck } from 'react-icons/fi'
 import { authService } from '../api/authService'
 import { useAuth } from '../context/AuthContext'
 import Button from '../components/ui/Button'
@@ -32,11 +32,19 @@ export default function Login() {
     }
   }
 
+  const fillAdminCredentials = () => {
+    setForm({
+      email: 'admin@cinepass.com',
+      password: 'Admin@123',
+    })
+    setError('')
+  }
+
   return (
     <div className="flex min-h-[calc(100vh-12rem)] items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         {/* Brand Icon & Heading */}
-        <div className="mb-8 text-center space-y-2">
+        <div className="mb-6 text-center space-y-2">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-primary shadow-xs">
             <FiFilm size={24} />
           </div>
@@ -46,6 +54,28 @@ export default function Login() {
           <p className="text-sm text-secondary-text">
             Sign in to manage your tickets and cinema reservations
           </p>
+        </div>
+
+        {/* 1-Click Demo Admin Banner */}
+        <div className="mb-5 rounded-2xl border border-rose-200/80 bg-rose-50/70 p-4 text-xs shadow-2xs">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-1.5 font-bold text-primary">
+              <FiShield size={14} />
+              <span>Recruiter / Portfolio Demo Access</span>
+            </div>
+            <span className="rounded-md bg-primary px-2 py-0.5 text-[10px] font-bold text-white">ADMIN</span>
+          </div>
+          <p className="text-secondary-text mb-3 leading-relaxed">
+            Want to test the full <strong>Admin Management Portal</strong>? Click below to auto-fill pre-seeded admin credentials:
+          </p>
+          <button
+            type="button"
+            onClick={fillAdminCredentials}
+            className="w-full flex items-center justify-center gap-2 rounded-xl bg-card-bg border border-rose-300 px-3 py-2 text-xs font-bold text-primary hover:bg-rose-100/60 transition-colors shadow-2xs"
+          >
+            <FiUserCheck size={14} />
+            Auto-Fill Admin Credentials (admin@cinepass.com)
+          </button>
         </div>
 
         {/* Card Form */}

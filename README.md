@@ -10,8 +10,6 @@
 
 > **CinePass** is an enterprise-grade, high-concurrency movie reservation and ticket booking platform engineered with a **Spring Boot 3** backend and an interactive **React 19** frontend. Features include database-level pessimistic seat locking, automated background lock expiration scheduling, stateless JWT authentication, role-based access control (RBAC), and transactional booking pipelines.
 
-![CinePass Preview](image.png)
-
 ---
 
 ## 🌐 Live Deployments

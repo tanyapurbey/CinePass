@@ -14,7 +14,7 @@
 
 ## 🌐 Live Deployments
 
-- **Live Application (Frontend)**: `[Deploying on Vercel...]` *(URL will be updated upon deployment)*
+- **Live Application (Frontend)**: [https://cine-pass-orpin.vercel.app](https://cine-pass-orpin.vercel.app)
 - **API Server & Swagger UI (Backend)**: [https://cinepass-2dzp.onrender.com/swagger-ui.html](https://cinepass-2dzp.onrender.com/swagger-ui.html)
 - **Database**: Cloud PostgreSQL on **Supabase**
 

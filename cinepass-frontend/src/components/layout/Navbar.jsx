@@ -1,10 +1,11 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { FiFilm, FiMenu, FiX, FiLogOut, FiUser, FiCompass } from 'react-icons/fi'
+import { FiFilm, FiMenu, FiX, FiLogOut, FiUser, FiCompass, FiShield, FiHome } from 'react-icons/fi'
 import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import Button from '../ui/Button'
 
 const userLinks = [
+  { to: '/', label: 'Home', end: true },
   { to: '/dashboard', label: 'Dashboard' },
   { to: '/movies', label: 'Browse Movies' },
   { to: '/bookings', label: 'My Bookings' },
@@ -38,7 +39,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-border/80 bg-card-bg/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Logo */}
-        <Link to="/" className="group flex items-center gap-2.5">
+        <Link to="/" className="group flex items-center gap-2.5" title="Go to Home">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white shadow-xs transition-transform duration-200 group-hover:scale-105">
             <FiFilm size={18} />
           </div>
@@ -52,13 +53,19 @@ export default function Navbar() {
           {isAuthenticated ? (
             <>
               {userLinks.map((link) => (
-                <NavLink key={link.to} to={link.to} className={navClass}>
+                <NavLink key={link.to} to={link.to} end={link.end} className={navClass}>
                   {link.label}
                 </NavLink>
               ))}
+
               {isAdmin && (
-                <NavLink to="/admin" className={navClass}>
-                  Admin Portal
+                <NavLink
+                  to="/admin"
+                  className="flex items-center gap-1.5 rounded-lg border border-rose-200 bg-rose-50 px-3 py-1.5 text-sm font-bold text-primary hover:bg-rose-100 transition-colors shadow-2xs"
+                  title="Switch to Admin Management Console"
+                >
+                  <FiShield size={14} />
+                  <span>Admin Portal</span>
                 </NavLink>
               )}
 
@@ -84,6 +91,9 @@ export default function Navbar() {
             </>
           ) : (
             <>
+              <NavLink to="/" end className={navClass}>
+                Home
+              </NavLink>
               <NavLink to="/movies" className={navClass}>
                 <span className="flex items-center gap-1.5">
                   <FiCompass size={15} />
@@ -127,6 +137,7 @@ export default function Navbar() {
                   <NavLink
                     key={link.to}
                     to={link.to}
+                    end={link.end}
                     className={mobileNavClass}
                     onClick={() => setMobileOpen(false)}
                   >
@@ -136,9 +147,10 @@ export default function Navbar() {
                 {isAdmin && (
                   <NavLink
                     to="/admin"
-                    className={mobileNavClass}
+                    className="flex items-center gap-2.5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-sm font-bold text-primary"
                     onClick={() => setMobileOpen(false)}
                   >
+                    <FiShield size={16} />
                     Admin Portal
                   </NavLink>
                 )}
@@ -166,6 +178,15 @@ export default function Navbar() {
               </>
             ) : (
               <>
+                <NavLink
+                  to="/"
+                  end
+                  className={mobileNavClass}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <FiHome size={16} />
+                  Home
+                </NavLink>
                 <NavLink
                   to="/movies"
                   className={mobileNavClass}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { FiSearch } from 'react-icons/fi'
+import { FiSearch, FiClipboard, FiX } from 'react-icons/fi'
 import { bookingService } from '../../api/bookingService'
 import { userService } from '../../api/userService'
 import PageHeader from '../../components/layout/PageHeader'
@@ -68,7 +68,7 @@ export default function AdminBookings() {
   }
 
   const handleCancel = async (bookingId) => {
-    if (!window.confirm('Cancel this booking?')) return
+    if (!window.confirm('Cancel this customer booking?')) return
     setCancellingId(bookingId)
     try {
       await bookingService.cancel(bookingId)
@@ -85,73 +85,93 @@ export default function AdminBookings() {
   if (loading) return <LoadingSpinner fullPage />
 
   return (
-    <div>
+    <div className="space-y-6">
       <PageHeader
-        title="Bookings"
-        description="View and search all platform bookings."
+        title="All System Bookings"
+        description="Audit all customer reservations, filter by booking reference number, and manage cancellations."
       />
 
       {error && <div className="mb-6"><ErrorAlert message={error} onDismiss={() => setError('')} /></div>}
 
-      <form onSubmit={handleSearch} className="mb-6 flex gap-2">
+      {/* Search Bar */}
+      <form onSubmit={handleSearch} className="flex max-w-md gap-2">
         <div className="relative flex-1">
-          <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-muted" size={16} />
+          <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary-text" size={16} />
           <input
             type="text"
             value={searchNumber}
             onChange={(e) => setSearchNumber(e.target.value)}
-            placeholder="Search by booking number..."
-            className="w-full rounded-md border border-border bg-surface py-2 pl-9 pr-3 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+            placeholder="Search by booking reference #..."
+            className="w-full rounded-xl border border-border bg-card-bg py-2.5 pl-10 pr-9 text-sm text-primary-text placeholder:text-secondary-text/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-2xs"
           />
+          {searchNumber && (
+            <button
+              type="button"
+              onClick={() => {
+                setSearchNumber('')
+                loadAllBookings()
+              }}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary-text hover:text-primary-text"
+            >
+              <FiX size={15} />
+            </button>
+          )}
         </div>
-        <Button type="submit" loading={searching}>Search</Button>
-        <Button type="button" variant="secondary" onClick={loadAllBookings}>
+        <Button type="submit" size="md" loading={searching} className="shrink-0 shadow-xs">
+          Search
+        </Button>
+        <Button type="button" variant="secondary" size="md" onClick={loadAllBookings} className="shrink-0">
           Reset
         </Button>
       </form>
 
+      {/* Bookings Table */}
       {bookings.length === 0 ? (
-        <EmptyState title="No bookings found" description="Bookings will appear here once users start booking." />
+        <EmptyState
+          icon={FiClipboard}
+          title="No bookings found"
+          description="There are currently no reservations matching your search criteria."
+        />
       ) : (
-        <Card padding={false}>
+        <Card padding={false} className="overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-border bg-off-white text-xs text-slate-muted">
-                  <th className="px-4 py-3 font-medium">Booking #</th>
-                  <th className="px-4 py-3 font-medium">User</th>
-                  <th className="px-4 py-3 font-medium">Movie</th>
-                  <th className="px-4 py-3 font-medium">Showtime</th>
-                  <th className="px-4 py-3 font-medium">Amount</th>
-                  <th className="px-4 py-3 font-medium">Status</th>
-                  <th className="px-4 py-3 font-medium">Actions</th>
+                <tr className="border-b border-border bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-secondary-text">
+                  <th className="px-6 py-3.5">Booking Ref</th>
+                  <th className="px-4 py-3.5">Customer Email</th>
+                  <th className="px-4 py-3.5">Movie</th>
+                  <th className="px-4 py-3.5">Showtime</th>
+                  <th className="px-4 py-3.5">Total Amount</th>
+                  <th className="px-4 py-3.5">Status</th>
+                  <th className="px-6 py-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-border/60">
                 {bookings.map((b) => (
-                  <tr key={b.id} className="border-b border-border last:border-0">
-                    <td className="px-4 py-3">
-                      <p className="font-medium text-navy">{b.bookingNumber}</p>
-                      <p className="text-xs text-slate-muted">
+                  <tr key={b.id} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="px-6 py-3.5">
+                      <p className="font-mono text-xs font-bold text-primary-text">#{b.bookingNumber}</p>
+                      <p className="text-[11px] text-secondary-text mt-0.5">
                         {formatDateTime(b.bookingTime)}
                       </p>
                     </td>
-                    <td className="px-4 py-3 text-charcoal">
+                    <td className="px-4 py-3.5 text-xs font-medium text-secondary-text">
                       {b.user?.email || '—'}
                     </td>
-                    <td className="px-4 py-3 text-charcoal">
+                    <td className="px-4 py-3.5 font-semibold text-primary-text">
                       {b.show?.movie?.title || '—'}
                     </td>
-                    <td className="px-4 py-3 text-charcoal">
+                    <td className="px-4 py-3.5 text-xs text-secondary-text">
                       {formatDateTime(b.show?.startTime)}
                     </td>
-                    <td className="px-4 py-3 text-charcoal">
+                    <td className="px-4 py-3.5 font-heading font-extrabold text-primary">
                       {formatCurrency(b.totalAmount)}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3.5">
                       <Badge status={b.status} />
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-6 py-3.5 text-right">
                       {(b.status === 'CONFIRMED' || b.status === 'PENDING') && (
                         <Button
                           variant="danger"

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { FiCalendar, FiFilm, FiMapPin, FiUsers, FiClipboard } from 'react-icons/fi'
+import { FiCalendar, FiFilm, FiMapPin, FiUsers, FiClipboard, FiPlus, FiArrowRight } from 'react-icons/fi'
 import { movieService } from '../../api/movieService'
 import { theaterService } from '../../api/theaterService'
 import { showService } from '../../api/showService'
@@ -70,38 +70,41 @@ export default function AdminDashboard() {
   if (loading) return <LoadingSpinner fullPage />
 
   const statCards = [
-    { label: 'Movies', value: stats.movies, icon: FiFilm, to: '/admin/movies' },
+    { label: 'Movies Catalog', value: stats.movies, icon: FiFilm, to: '/admin/movies' },
     { label: 'Theatres', value: stats.theaters, icon: FiMapPin, to: '/admin/theaters' },
-    { label: 'Shows', value: stats.shows, icon: FiCalendar, to: '/admin/shows' },
-    { label: 'Users', value: stats.users, icon: FiUsers, to: '/admin/users' },
-    { label: 'Bookings', value: stats.bookings, icon: FiClipboard, to: '/admin/bookings' },
+    { label: 'Scheduled Shows', value: stats.shows, icon: FiCalendar, to: '/admin/shows' },
+    { label: 'User Accounts', value: stats.users, icon: FiUsers, to: '/admin/users' },
+    { label: 'Total Bookings', value: stats.bookings, icon: FiClipboard, to: '/admin/bookings' },
   ]
 
   return (
-    <div>
+    <div className="space-y-8">
       <PageHeader
-        title="Dashboard"
-        description="Overview of your CinePass platform."
+        title="Admin Control Center"
+        description="Monitor cinema operations, active bookings, schedules, and catalogue."
         action={
           <Link to="/admin/movies">
-            <Button size="sm">Add Movie</Button>
+            <Button size="sm" className="shadow-xs">
+              <FiPlus size={15} /> Add Movie
+            </Button>
           </Link>
         }
       />
 
       {error && <div className="mb-6"><ErrorAlert message={error} /></div>}
 
-      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      {/* Metrics Row */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {statCards.map((stat) => (
-          <Link key={stat.label} to={stat.to}>
-            <Card className="transition-shadow hover:shadow-md">
-              <div className="flex items-center gap-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-indigo-50">
-                  <stat.icon className="text-accent" size={14} />
+          <Link key={stat.label} to={stat.to} className="group block">
+            <Card className="hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-200">
+              <div className="flex items-center gap-3.5">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-primary shadow-2xs group-hover:bg-primary group-hover:text-white transition-colors">
+                  <stat.icon size={19} />
                 </div>
                 <div>
-                  <p className="text-xs text-slate-muted">{stat.label}</p>
-                  <p className="text-lg font-semibold text-navy">{stat.value}</p>
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-secondary-text">{stat.label}</p>
+                  <p className="font-heading text-xl font-extrabold text-primary-text">{stat.value}</p>
                 </div>
               </div>
             </Card>
@@ -109,46 +112,51 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      <Card>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-navy">Recent bookings</h2>
-          <Link to="/admin/bookings" className="text-xs font-medium text-accent">
-            View all
+      {/* Recent Bookings Table */}
+      <Card className="p-0 overflow-hidden shadow-sm">
+        <div className="flex items-center justify-between border-b border-border/80 px-6 py-4.5 bg-slate-50/50">
+          <div>
+            <h2 className="font-heading text-base font-bold text-primary-text">Recent Transactions</h2>
+            <p className="text-xs text-secondary-text">Live reservation audit trail</p>
+          </div>
+          <Link to="/admin/bookings" className="text-xs font-bold text-primary hover:text-primary-hover flex items-center gap-1">
+            View All <FiArrowRight size={13} />
           </Link>
         </div>
+
         {recentBookings.length === 0 ? (
-          <p className="text-sm text-slate-muted">No bookings yet.</p>
+          <div className="p-8 text-center text-sm text-secondary-text">No bookings recorded yet.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-border text-xs text-slate-muted">
-                  <th className="pb-2 pr-4 font-medium">Booking</th>
-                  <th className="pb-2 pr-4 font-medium">Movie</th>
-                  <th className="pb-2 pr-4 font-medium">User</th>
-                  <th className="pb-2 pr-4 font-medium">Amount</th>
-                  <th className="pb-2 font-medium">Status</th>
+                <tr className="border-b border-border bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-secondary-text">
+                  <th className="py-3 px-6">Booking Reference</th>
+                  <th className="py-3 px-4">Movie</th>
+                  <th className="py-3 px-4">User</th>
+                  <th className="py-3 px-4">Amount</th>
+                  <th className="py-3 px-6 text-right">Status</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-border/60">
                 {recentBookings.map((b) => (
-                  <tr key={b.id} className="border-b border-border last:border-0">
-                    <td className="py-2.5 pr-4">
-                      <p className="font-medium text-charcoal">{b.bookingNumber}</p>
-                      <p className="text-xs text-slate-muted">
+                  <tr key={b.id} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="py-3.5 px-6">
+                      <p className="font-mono text-xs font-bold text-primary-text">#{b.bookingNumber}</p>
+                      <p className="text-[11px] text-secondary-text mt-0.5">
                         {formatDateTime(b.bookingTime)}
                       </p>
                     </td>
-                    <td className="py-2.5 pr-4 text-charcoal">
+                    <td className="py-3.5 px-4 font-semibold text-primary-text">
                       {b.show?.movie?.title || '—'}
                     </td>
-                    <td className="py-2.5 pr-4 text-charcoal">
+                    <td className="py-3.5 px-4 text-xs font-medium text-secondary-text">
                       {b.user?.email || '—'}
                     </td>
-                    <td className="py-2.5 pr-4 text-charcoal">
+                    <td className="py-3.5 px-4 font-heading font-extrabold text-primary">
                       {formatCurrency(b.totalAmount)}
                     </td>
-                    <td className="py-2.5">
+                    <td className="py-3.5 px-6 text-right">
                       <Badge status={b.status} />
                     </td>
                   </tr>

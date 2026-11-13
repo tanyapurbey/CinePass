@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { FiSearch } from 'react-icons/fi'
+import { FiSearch, FiFilm, FiX } from 'react-icons/fi'
 import { movieService } from '../api/movieService'
 import PageHeader from '../components/layout/PageHeader'
 import MovieCard from '../components/movies/MovieCard'
@@ -55,60 +55,87 @@ export default function Movies() {
     }
   }
 
+  const clearSearch = () => {
+    setSearch('')
+    setFiltered(movies)
+  }
+
   if (loading) return <LoadingSpinner fullPage />
 
   const tabs = [
-    { id: 'all', label: 'All' },
+    { id: 'all', label: 'All Releases' },
     { id: 'now', label: 'Now Showing' },
     { id: 'upcoming', label: 'Upcoming' },
   ]
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
       <PageHeader
-        title="Movies"
-        description="Search and browse current and upcoming releases."
+        title="Movies & Releases"
+        description="Search across genres and languages, explore showtimes, and book tickets."
       />
 
       {error && <div className="mb-6"><ErrorAlert message={error} onDismiss={() => setError('')} /></div>}
 
-      <form onSubmit={handleSearch} className="mb-6 flex gap-2">
-        <div className="relative flex-1">
-          <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-muted" size={16} />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by title..."
-            className="w-full rounded-md border border-border bg-surface py-2 pl-9 pr-3 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-          />
-        </div>
-        <Button type="submit" loading={searching}>
-          Search
-        </Button>
-      </form>
+      {/* Search & Filter Bar */}
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <form onSubmit={handleSearch} className="flex flex-1 max-w-lg gap-2">
+          <div className="relative flex-1">
+            <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary-text" size={17} />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search movie by title, genre..."
+              className="w-full rounded-xl border border-border bg-card-bg py-2.5 pl-10 pr-9 text-sm text-primary-text placeholder:text-secondary-text/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-2xs"
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={clearSearch}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary-text hover:text-primary-text"
+              >
+                <FiX size={15} />
+              </button>
+            )}
+          </div>
+          <Button type="submit" size="md" loading={searching} className="shrink-0 shadow-xs">
+            Search
+          </Button>
+        </form>
 
-      <div className="mb-6 flex gap-1 rounded-lg border border-border bg-surface p-1">
-        {tabs.map((t) => (
-          <button
-            key={t.id}
-            type="button"
-            onClick={() => setTab(t.id)}
-            className={`flex-1 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
-              tab === t.id
-                ? 'bg-navy text-white'
-                : 'text-slate-muted hover:text-charcoal'
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
+        {/* Tab Filters */}
+        <div className="inline-flex rounded-xl border border-border bg-card-bg p-1 shadow-2xs">
+          {tabs.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setTab(t.id)}
+              className={`rounded-lg px-4 py-2 text-xs font-bold transition-all duration-150 ${
+                tab === t.id
+                  ? 'bg-primary text-white shadow-xs'
+                  : 'text-secondary-text hover:text-primary-text'
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
       </div>
 
+      {/* Movies Grid */}
       {filtered.length === 0 ? (
         <EmptyState
+          icon={FiFilm}
           title="No movies found"
-          description="Try a different search or check back later."
+          description="Try modifying your search query or switch between Now Showing and Upcoming tabs."
+          action={
+            search && (
+              <Button variant="secondary" size="sm" onClick={clearSearch}>
+                Clear Search Filter
+              </Button>
+            )
+          }
         />
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">

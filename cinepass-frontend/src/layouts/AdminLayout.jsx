@@ -11,16 +11,17 @@ import {
   FiX,
   FiMapPin,
   FiClipboard,
+  FiArrowLeft,
 } from 'react-icons/fi'
 import { useAuth } from '../context/AuthContext'
 
 const navItems = [
   { to: '/admin', label: 'Dashboard', icon: FiHome, end: true },
-  { to: '/admin/movies', label: 'Movies', icon: FiFilm },
-  { to: '/admin/theaters', label: 'Theatres', icon: FiMapPin },
-  { to: '/admin/shows', label: 'Shows', icon: FiCalendar },
-  { to: '/admin/bookings', label: 'Bookings', icon: FiClipboard },
-  { to: '/admin/users', label: 'Users', icon: FiUsers },
+  { to: '/admin/movies', label: 'Movies Catalog', icon: FiFilm },
+  { to: '/admin/theaters', label: 'Theatres & Screens', icon: FiMapPin },
+  { to: '/admin/shows', label: 'Show Schedules', icon: FiCalendar },
+  { to: '/admin/bookings', label: 'All Bookings', icon: FiClipboard },
+  { to: '/admin/users', label: 'User Accounts', icon: FiUsers },
 ]
 
 export default function AdminLayout() {
@@ -34,21 +35,33 @@ export default function AdminLayout() {
   }
 
   const linkClass = ({ isActive }) =>
-    `flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+    `flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-semibold transition-all duration-150 ${
       isActive
-        ? 'bg-indigo-50 text-accent'
-        : 'text-slate-muted hover:bg-off-white hover:text-charcoal'
+        ? 'bg-primary text-white shadow-xs font-bold'
+        : 'text-slate-400 hover:bg-secondary-dark hover:text-white'
     }`
 
   const sidebar = (
-    <div className="flex h-full flex-col">
-      <div className="border-b border-border px-4 py-4">
-        <p className="text-xs font-medium uppercase tracking-wider text-slate-muted">
-          Admin
-        </p>
-        <p className="mt-1 text-sm font-semibold text-navy">CinePass</p>
+    <div className="flex h-full flex-col bg-sidebar text-slate-300">
+      {/* Brand Header */}
+      <div className="flex items-center gap-2.5 border-b border-slate-800/80 px-5 py-5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-white shadow-xs">
+          <FiFilm size={16} />
+        </div>
+        <div>
+          <div className="flex items-center gap-1.5">
+            <span className="font-heading text-sm font-extrabold text-white">CinePass</span>
+            <span className="rounded-md bg-rose-500/10 px-1.5 py-0.5 text-[9px] font-bold text-primary">ADMIN</span>
+          </div>
+          <p className="text-[11px] text-slate-400">Control Center</p>
+        </div>
       </div>
-      <nav className="flex-1 space-y-1 p-3">
+
+      {/* Nav List */}
+      <nav className="flex-1 space-y-1.5 p-3.5">
+        <p className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+          Management
+        </p>
         {navItems.map((item) => (
           <NavLink
             key={item.to}
@@ -57,66 +70,81 @@ export default function AdminLayout() {
             className={linkClass}
             onClick={() => setSidebarOpen(false)}
           >
-            <item.icon size={16} />
-            {item.label}
+            <item.icon size={17} />
+            <span>{item.label}</span>
           </NavLink>
         ))}
       </nav>
-      <div className="border-t border-border p-3">
-        <NavLink
-          to="/dashboard"
-          className="mb-2 flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-slate-muted hover:bg-off-white hover:text-charcoal"
+
+      {/* Footer / Actions */}
+      <div className="border-t border-slate-800/80 p-3.5 space-y-1">
+        <button
+          type="button"
+          onClick={() => navigate('/')}
+          className="flex w-full items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-slate-400 transition-colors hover:bg-secondary-dark hover:text-white"
         >
-          <FiBarChart2 size={16} />
-          User View
-        </NavLink>
+          <FiArrowLeft size={14} />
+          <span>Exit to Main Site</span>
+        </button>
         <button
           type="button"
           onClick={handleLogout}
-          className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-slate-muted hover:bg-off-white hover:text-charcoal"
+          className="flex w-full items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-red-400 transition-colors hover:bg-red-500/10 hover:text-red-300"
         >
-          <FiLogOut size={16} />
-          Logout
+          <FiLogOut size={14} />
+          <span>Sign Out</span>
         </button>
       </div>
     </div>
   )
 
   return (
-    <div className="flex min-h-screen bg-off-white">
-      <aside className="hidden w-56 shrink-0 border-r border-border bg-surface lg:block">
-        {sidebar}
+    <div className="flex min-h-screen bg-main-bg">
+      {/* Desktop Sidebar */}
+      <aside className="hidden w-64 shrink-0 border-r border-slate-800/80 md:block">
+        <div className="fixed inset-y-0 w-64">{sidebar}</div>
       </aside>
 
+      {/* Mobile Drawer */}
       {sidebarOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-50 flex md:hidden">
           <div
-            className="absolute inset-0 bg-navy/20"
+            className="fixed inset-0 bg-sidebar/60 backdrop-blur-xs"
             onClick={() => setSidebarOpen(false)}
           />
-          <aside className="absolute left-0 top-0 h-full w-56 bg-surface shadow-lg">
-            {sidebar}
-          </aside>
+          <div className="relative w-72 max-w-xs">{sidebar}</div>
         </div>
       )}
 
-      <div className="flex flex-1 flex-col">
-        <header className="flex h-14 items-center gap-3 border-b border-border bg-surface px-4 lg:px-6">
+      {/* Main Content Area */}
+      <div className="flex flex-1 flex-col overflow-hidden">
+        {/* Top Header */}
+        <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-border bg-card-bg/90 px-4 sm:px-6 backdrop-blur-md">
           <button
             type="button"
-            className="lg:hidden text-charcoal"
+            className="rounded-lg p-2 text-primary-text md:hidden"
             onClick={() => setSidebarOpen(true)}
             aria-label="Open sidebar"
           >
             <FiMenu size={20} />
           </button>
-          <h2 className="text-sm font-semibold text-navy">Administration</h2>
+          <div className="flex items-center gap-2">
+            <span className="font-heading text-xs font-bold uppercase tracking-wider text-secondary-text">
+              Cinema Admin Console
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Live System
+            </span>
+          </div>
         </header>
-        <main className="flex-1 p-4 lg:p-6">
+
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
           <Outlet />
         </main>
       </div>
     </div>
   )
 }
-

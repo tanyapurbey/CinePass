@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { FiClock } from 'react-icons/fi'
+import { FiClock, FiAlertTriangle } from 'react-icons/fi'
 import { SEAT_LOCK_DURATION_MINUTES } from '../../utils/constants'
 
 const LOCK_DURATION_SECONDS = SEAT_LOCK_DURATION_MINUTES * 60
@@ -32,15 +32,25 @@ export default function LockTimer({ lockedAt, onExpire }) {
 
   return (
     <div
-      className={`flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium ${
+      className={`inline-flex items-center gap-2 rounded-xl border px-3.5 py-2 text-xs font-bold transition-all shadow-2xs ${
         isUrgent
-          ? 'border-red-200 bg-red-50 text-red-700'
-          : 'border-amber-200 bg-amber-50 text-amber-700'
+          ? 'border-red-300 bg-red-50 text-error animate-pulse'
+          : 'border-amber-300/80 bg-amber-50 text-amber-800'
       }`}
     >
-      <FiClock size={13} />
+      {isUrgent ? (
+        <FiAlertTriangle size={15} className="shrink-0 text-error" />
+      ) : (
+        <FiClock size={15} className="shrink-0 text-amber-600 animate-spin-slow" />
+      )}
       <span>
-        {remaining > 0 ? `Seats held for ${label}` : 'Seat lock expired'}
+        {remaining > 0 ? (
+          <>
+            Seats locked for <span className="font-mono text-sm underline decoration-2">{label}</span>
+          </>
+        ) : (
+          'Seat lock session expired'
+        )}
       </span>
     </div>
   )

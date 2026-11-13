@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { FiPlus } from 'react-icons/fi'
+import { FiPlus, FiCalendar, FiClock, FiMapPin, FiFilm } from 'react-icons/fi'
 import { showService } from '../../api/showService'
 import { movieService } from '../../api/movieService'
 import { screenService } from '../../api/screenService'
@@ -99,14 +99,14 @@ export default function AdminShows() {
   if (loading) return <LoadingSpinner fullPage />
 
   return (
-    <div>
+    <div className="space-y-6">
       <PageHeader
-        title="Shows"
-        description="Schedule movie showtimes across theatres."
+        title="Show Schedules"
+        description="Schedule screening slots for movies across cinema screens."
         action={
-          <Button size="sm" onClick={() => setModalOpen(true)}>
-            <FiPlus size={14} />
-            Add Show
+          <Button size="sm" onClick={() => setModalOpen(true)} className="shadow-xs">
+            <FiPlus size={15} />
+            Schedule New Show
           </Button>
         }
       />
@@ -115,39 +115,48 @@ export default function AdminShows() {
 
       {shows.length === 0 ? (
         <EmptyState
-          title="No shows scheduled"
-          description="Create a show to enable ticket bookings."
-          action={<Button size="sm" onClick={() => setModalOpen(true)}>Add Show</Button>}
+          icon={FiCalendar}
+          title="No scheduled shows found"
+          description="Schedule a screening for any movie in your active theatres."
+          action={<Button size="sm" onClick={() => setModalOpen(true)}>Schedule Show</Button>}
         />
       ) : (
-        <Card padding={false}>
+        <Card padding={false} className="overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-border bg-off-white text-xs text-slate-muted">
-                  <th className="px-4 py-3 font-medium">Movie</th>
-                  <th className="px-4 py-3 font-medium">Theatre</th>
-                  <th className="px-4 py-3 font-medium">Screen</th>
-                  <th className="px-4 py-3 font-medium">Start</th>
-                  <th className="px-4 py-3 font-medium">End</th>
+                <tr className="border-b border-border bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-secondary-text">
+                  <th className="px-6 py-3.5">Movie</th>
+                  <th className="px-4 py-3.5">Cinema Property</th>
+                  <th className="px-4 py-3.5">Auditorium Screen</th>
+                  <th className="px-4 py-3.5">Start Showtime</th>
+                  <th className="px-6 py-3.5">End Showtime</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-border/60">
                 {shows.map((show) => (
-                  <tr key={show.id} className="border-b border-border last:border-0">
-                    <td className="px-4 py-3 font-medium text-navy">
-                      {show.movie?.title || '—'}
+                  <tr key={show.id} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="px-6 py-3.5">
+                      <div className="flex items-center gap-2.5 font-heading font-bold text-primary-text">
+                        <FiFilm className="text-primary shrink-0" size={15} />
+                        <span>{show.movie?.title || '—'}</span>
+                      </div>
                     </td>
-                    <td className="px-4 py-3 text-charcoal">
-                      {show.screen?.theater?.name || '—'}
+                    <td className="px-4 py-3.5 font-medium text-primary-text">
+                      <div className="flex items-center gap-1.5 text-xs">
+                        <FiMapPin className="text-secondary-text" size={13} />
+                        <span>{show.screen?.theater?.name || '—'}</span>
+                      </div>
                     </td>
-                    <td className="px-4 py-3 text-charcoal">
-                      {show.screen?.name || '—'}
+                    <td className="px-4 py-3.5">
+                      <span className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">
+                        {show.screen?.name || '—'}
+                      </span>
                     </td>
-                    <td className="px-4 py-3 text-charcoal">
+                    <td className="px-4 py-3.5 text-xs font-semibold text-emerald-700">
                       {formatDateTime(show.startTime)}
                     </td>
-                    <td className="px-4 py-3 text-charcoal">
+                    <td className="px-6 py-3.5 text-xs font-medium text-secondary-text">
                       {formatDateTime(show.endTime)}
                     </td>
                   </tr>
@@ -158,68 +167,74 @@ export default function AdminShows() {
         </Card>
       )}
 
+      {/* Schedule Show Modal */}
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        title="Add show"
+        title="Schedule Movie Show"
         footer={
           <ModalActions
             onCancel={() => setModalOpen(false)}
             onConfirm={handleCreate}
             loading={saving}
-            confirmLabel="Create"
+            confirmLabel="Confirm Schedule"
           />
         }
       >
-        <div className="space-y-3">
+        <div className="space-y-4">
           <Select
-            label="Movie"
+            label="Movie Selection"
             required
             value={form.movieId}
             onChange={(e) => setForm({ ...form, movieId: e.target.value })}
           >
-            <option value="">Select movie</option>
+            <option value="">Choose movie...</option>
             {movies.map((m) => (
               <option key={m.id} value={m.id}>{m.title}</option>
             ))}
           </Select>
+
           <Select
-            label="Theatre"
+            label="Cinema Theatre"
             required
             value={form.theaterId}
             onChange={(e) => handleTheaterChange(e.target.value)}
           >
-            <option value="">Select theatre</option>
+            <option value="">Choose cinema...</option>
             {theaters.map((t) => (
-              <option key={t.id} value={t.id}>{t.name} — {t.city}</option>
+              <option key={t.id} value={t.id}>{t.name} ({t.city})</option>
             ))}
           </Select>
+
           <Select
-            label="Screen"
+            label="Auditorium Screen"
             required
             value={form.screenId}
             onChange={(e) => setForm({ ...form, screenId: e.target.value })}
             disabled={!form.theaterId}
           >
-            <option value="">Select screen</option>
+            <option value="">{form.theaterId ? 'Choose screen...' : 'Select a theatre first'}</option>
             {screens.map((s) => (
-              <option key={s.id} value={s.id}>{s.name}</option>
+              <option key={s.id} value={s.id}>{s.name} ({s.totalSeats} seats)</option>
             ))}
           </Select>
-          <Input
-            label="Start time"
-            type="datetime-local"
-            required
-            value={form.startTime}
-            onChange={(e) => setForm({ ...form, startTime: e.target.value })}
-          />
-          <Input
-            label="End time"
-            type="datetime-local"
-            required
-            value={form.endTime}
-            onChange={(e) => setForm({ ...form, endTime: e.target.value })}
-          />
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Input
+              label="Start Showtime"
+              type="datetime-local"
+              required
+              value={form.startTime}
+              onChange={(e) => setForm({ ...form, startTime: e.target.value })}
+            />
+            <Input
+              label="End Showtime"
+              type="datetime-local"
+              required
+              value={form.endTime}
+              onChange={(e) => setForm({ ...form, endTime: e.target.value })}
+            />
+          </div>
         </div>
       </Modal>
     </div>

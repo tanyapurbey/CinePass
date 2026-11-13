@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { FiUser, FiCheckCircle } from 'react-icons/fi'
 import { userService } from '../api/userService'
 import { useAuth } from '../context/AuthContext'
 import PageHeader from '../components/layout/PageHeader'
@@ -44,7 +45,7 @@ export default function Profile() {
         role: user.role,
       })
       updateStoredUser({ email: data.email })
-      setSuccess('Profile updated successfully.')
+      setSuccess('Your profile has been updated successfully.')
     } catch (err) {
       setError(getErrorMessage(err))
     } finally {
@@ -55,44 +56,53 @@ export default function Profile() {
   if (loading) return <LoadingSpinner fullPage />
 
   return (
-    <div className="mx-auto max-w-lg px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-lg px-4 py-8 sm:px-6 lg:px-8 space-y-6">
       <PageHeader
-        title="Profile"
-        description="Manage your account information."
+        title="Personal Profile"
+        description="Manage your CinePass account details & phone number."
         action={<Badge status={user.role}>{user.role}</Badge>}
       />
 
-      {error && <div className="mb-6"><ErrorAlert message={error} onDismiss={() => setError('')} /></div>}
+      {error && <div className="mb-4"><ErrorAlert message={error} onDismiss={() => setError('')} /></div>}
       {success && (
-        <div className="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
-          {success}
+        <div className="flex items-center gap-2.5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3.5 text-xs font-bold text-emerald-900 shadow-2xs">
+          <FiCheckCircle className="text-emerald-600" size={16} />
+          <span>{success}</span>
         </div>
       )}
 
-      <Card>
+      <Card className="shadow-md">
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
-            label="Full name"
+            label="Full Name"
             required
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
+            placeholder="Your Name"
           />
+
           <Input
-            label="Email"
+            label="Email Address"
             type="email"
             required
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
+            placeholder="you@example.com"
           />
+
           <Input
-            label="Phone number"
+            label="Phone Number"
             required
             value={form.phoneNumber}
             onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })}
+            placeholder="+91 98765 43210"
           />
-          <Button type="submit" loading={saving}>
-            Save changes
-          </Button>
+
+          <div className="pt-2">
+            <Button type="submit" size="md" className="w-full shadow-xs" loading={saving}>
+              Save Profile Changes
+            </Button>
+          </div>
         </form>
       </Card>
     </div>

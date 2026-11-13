@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { FiArrowRight, FiArrowLeft, FiClock, FiMapPin, FiFilm } from 'react-icons/fi'
 import { showService } from '../api/showService'
 import { useAuth } from '../context/AuthContext'
 import PageHeader from '../components/layout/PageHeader'
@@ -42,7 +43,7 @@ export default function SeatSelection() {
 
   const handleContinue = () => {
     if (selectedIds.length === 0) {
-      setError('Please select at least one seat.')
+      setError('Please select at least one seat to proceed.')
       return
     }
     navigate(`/bookings/checkout`, {
@@ -62,28 +63,30 @@ export default function SeatSelection() {
   const theater = show?.screen?.theater
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8 space-y-6">
       <PageHeader
-        title="Select seats"
-        description={movie?.title}
+        title="Choose Seats"
+        description={movie?.title || 'Screening'}
         action={
           <Link to={`/movies/${movie?.id}`}>
             <Button variant="secondary" size="sm">
-              Back to movie
+              <FiArrowLeft size={14} /> Back to Movie
             </Button>
           </Link>
         }
       />
 
-      {error && <div className="mb-6"><ErrorAlert message={error} onDismiss={() => setError('')} /></div>}
+      {error && <div className="mb-4"><ErrorAlert message={error} onDismiss={() => setError('')} /></div>}
 
-      <div className="mb-6 grid gap-4 sm:grid-cols-3">
-        <Info label="Showtime" value={formatDateTime(show?.startTime)} />
-        <Info label="Theatre" value={theater?.name} />
-        <Info label="Screen" value={show?.screen?.name} />
+      {/* Show Info Badges */}
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Info icon={FiClock} label="Showtime" value={formatDateTime(show?.startTime)} />
+        <Info icon={FiMapPin} label="Theatre" value={theater?.name} />
+        <Info icon={FiFilm} label="Screen" value={show?.screen?.name} />
       </div>
 
-      <Card className="mb-6">
+      {/* Main Seat Grid Card */}
+      <Card className="py-8 shadow-md">
         <SeatGrid
           seats={seats}
           selectedIds={selectedIds}
@@ -91,24 +94,31 @@ export default function SeatSelection() {
         />
       </Card>
 
-      <Card>
+      {/* Checkout Bar */}
+      <Card className="border-slate-300 shadow-md">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-xs text-slate-muted">Selected seats</p>
-            <p className="text-sm font-medium text-navy">
+            <p className="text-xs font-bold uppercase tracking-wider text-secondary-text">Selected Seats ({selectedIds.length})</p>
+            <p className="font-heading text-sm font-bold text-primary-text mt-0.5">
               {selectedIds.length === 0
-                ? 'None'
+                ? <span className="text-secondary-text font-normal">None selected yet</span>
                 : seats
                     .filter((s) => selectedIds.includes(s.id))
                     .map((s) => s.seat?.seatNumber)
                     .join(', ')}
             </p>
-            <p className="mt-1 text-lg font-semibold text-navy">
+            <p className="mt-1 font-heading text-2xl font-extrabold text-primary">
               {formatCurrency(total)}
             </p>
           </div>
-          <Button onClick={handleContinue} disabled={selectedIds.length === 0}>
-            Continue to payment
+          <Button
+            size="lg"
+            onClick={handleContinue}
+            disabled={selectedIds.length === 0}
+            className="shadow-md shadow-primary/20"
+          >
+            Lock Seats & Checkout
+            <FiArrowRight size={17} />
           </Button>
         </div>
       </Card>
@@ -116,11 +126,16 @@ export default function SeatSelection() {
   )
 }
 
-function Info({ label, value }) {
+function Info({ icon: Icon, label, value }) {
   return (
-    <div className="rounded-lg border border-border bg-surface px-3 py-2">
-      <p className="text-xs text-slate-muted">{label}</p>
-      <p className="text-sm font-medium text-navy">{value || '—'}</p>
+    <div className="flex items-center gap-3 rounded-xl border border-border bg-card-bg px-4 py-3 shadow-2xs">
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-rose-50 text-primary">
+        <Icon size={15} />
+      </div>
+      <div>
+        <p className="text-[11px] font-bold uppercase tracking-wider text-secondary-text">{label}</p>
+        <p className="font-heading text-sm font-bold text-primary-text line-clamp-1">{value || '—'}</p>
+      </div>
     </div>
   )
 }

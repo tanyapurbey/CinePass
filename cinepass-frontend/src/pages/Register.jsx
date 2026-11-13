@@ -35,59 +35,79 @@ export default function Register() {
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-12">
-      <div className="w-full max-w-sm">
-        <div className="mb-8 text-center">
-          <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-50">
-            <FiFilm className="text-accent" size={20} />
+    <div className="flex min-h-[calc(100vh-12rem)] items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md">
+        {/* Brand Icon & Heading */}
+        <div className="mb-8 text-center space-y-2">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-primary shadow-xs">
+            <FiFilm size={24} />
           </div>
-          <h1 className="text-xl font-semibold text-navy">Create account</h1>
-          <p className="mt-1 text-sm text-slate-muted">
-            Join CinePass to start booking
+          <h1 className="font-heading text-2xl font-extrabold text-primary-text sm:text-3xl">
+            Create an Account
+          </h1>
+          <p className="text-sm text-secondary-text">
+            Join CinePass to reserve seats and track cinema bookings
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border border-border bg-surface p-6 shadow-sm">
-          {error && <ErrorAlert message={error} onDismiss={() => setError('')} />}
-          <Input
-            label="Full name"
-            required
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-          />
-          <Input
-            label="Email"
-            type="email"
-            required
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-          />
-          <Input
-            label="Phone number"
-            required
-            value={form.phoneNumber}
-            onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })}
-          />
-          <Input
-            label="Password"
-            type="password"
-            required
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-          />
-          <Button type="submit" className="w-full" loading={loading}>
-            Create account
-          </Button>
-        </form>
+        {/* Card Form */}
+        <div className="rounded-3xl border border-border bg-card-bg p-7 sm:p-8 shadow-xl shadow-slate-900/5">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error && <ErrorAlert message={error} onDismiss={() => setError('')} />}
 
-        <p className="mt-4 text-center text-sm text-slate-muted">
-          Already have an account?{' '}
-          <Link to="/login" className="font-medium text-accent hover:text-accent-hover">
-            Sign in
-          </Link>
-        </p>
+            <Input
+              label="Full Name"
+              required
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              placeholder="e.g. Tanya Sharma"
+              autoComplete="name"
+            />
+
+            <Input
+              label="Email Address"
+              type="email"
+              required
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              placeholder="you@example.com"
+              autoComplete="email"
+            />
+
+            <Input
+              label="Phone Number"
+              required
+              value={form.phoneNumber}
+              onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })}
+              placeholder="+91 98765 43210"
+              autoComplete="tel"
+            />
+
+            <Input
+              label="Password"
+              type="password"
+              required
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              placeholder="••••••••"
+              autoComplete="new-password"
+            />
+
+            <div className="pt-2">
+              <Button type="submit" size="lg" className="w-full shadow-md shadow-primary/20" loading={loading}>
+                Complete Registration
+              </Button>
+            </div>
+          </form>
+
+          <div className="mt-6 border-t border-border/80 pt-5 text-center text-xs text-secondary-text">
+            <span>Already have a CinePass account? </span>
+            <Link to="/login" className="font-bold text-primary hover:text-primary-hover">
+              Sign In
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
-

@@ -8,6 +8,7 @@ import ErrorAlert from '../components/common/ErrorAlert'
 import EmptyState from '../components/common/EmptyState'
 import Button from '../components/ui/Button'
 import { Link } from 'react-router-dom'
+import { FiBookmark, FiPlus } from 'react-icons/fi'
 import { getErrorMessage } from '../utils/formatters'
 
 export default function BookingHistory() {
@@ -31,7 +32,7 @@ export default function BookingHistory() {
   }, [user.id])
 
   const handleCancel = async (bookingId) => {
-    if (!window.confirm('Cancel this booking?')) return
+    if (!window.confirm('Are you sure you want to cancel this booking? Held seats will be released.')) return
     setCancellingId(bookingId)
     try {
       await bookingService.cancel(bookingId)
@@ -46,26 +47,34 @@ export default function BookingHistory() {
   if (loading) return <LoadingSpinner fullPage />
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8 space-y-6">
       <PageHeader
-        title="Booking history"
-        description="View and manage your past and upcoming bookings."
+        title="My Reservations"
+        description="Inspect and manage your active and past cinema ticket bookings."
+        action={
+          <Link to="/movies">
+            <Button size="sm">
+              <FiPlus size={15} /> Book Another Show
+            </Button>
+          </Link>
+        }
       />
 
       {error && <div className="mb-6"><ErrorAlert message={error} onDismiss={() => setError('')} /></div>}
 
       {bookings.length === 0 ? (
         <EmptyState
-          title="No bookings yet"
-          description="Book your first movie ticket to see it here."
+          icon={FiBookmark}
+          title="No reservations found"
+          description="You haven't reserved any cinema seats yet. Browse now-showing releases to get started."
           action={
             <Link to="/movies">
-              <Button size="sm">Browse movies</Button>
+              <Button size="md">Browse Movies</Button>
             </Link>
           }
         />
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {bookings.map((booking) => (
             <BookingCard
               key={booking.id}

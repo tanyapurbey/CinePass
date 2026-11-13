@@ -6,22 +6,27 @@ export default function Modal({ open, onClose, title, children, footer }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-navy/30" onClick={onClose} />
-      <div className="relative w-full max-w-lg rounded-lg border border-border bg-surface shadow-xl">
-        <div className="flex items-center justify-between border-b border-border px-4 py-3">
-          <h3 className="text-sm font-semibold text-navy">{title}</h3>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-sidebar/50 backdrop-blur-xs transition-opacity"
+        onClick={onClose}
+      />
+      {/* Modal Dialog */}
+      <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-card-bg shadow-2xl transition-all duration-200">
+        <div className="flex items-center justify-between border-b border-border px-6 py-4.5">
+          <h3 className="font-heading text-base font-bold text-primary-text">{title}</h3>
           <button
             type="button"
             onClick={onClose}
-            className="text-slate-muted hover:text-charcoal"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-secondary-text transition-colors hover:bg-slate-100 hover:text-primary-text"
             aria-label="Close"
           >
             <FiX size={18} />
           </button>
         </div>
-        <div className="px-4 py-4">{children}</div>
+        <div className="max-h-[75vh] overflow-y-auto px-6 py-5">{children}</div>
         {footer && (
-          <div className="flex justify-end gap-2 border-t border-border px-4 py-3">
+          <div className="flex justify-end gap-2.5 border-t border-border bg-slate-50/50 px-6 py-3.5">
             {footer}
           </div>
         )}

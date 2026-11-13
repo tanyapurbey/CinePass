@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { FiEdit2, FiPlus, FiTrash2 } from 'react-icons/fi'
+import { FiEdit2, FiPlus, FiTrash2, FiUsers, FiMail, FiPhone } from 'react-icons/fi'
 import { userService } from '../../api/userService'
 import PageHeader from '../../components/layout/PageHeader'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
@@ -83,7 +83,7 @@ export default function AdminUsers() {
   }
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Delete this user?')) return
+    if (!window.confirm('Delete this user account?')) return
     try {
       await userService.delete(id)
       loadUsers()
@@ -95,14 +95,14 @@ export default function AdminUsers() {
   if (loading) return <LoadingSpinner fullPage />
 
   return (
-    <div>
+    <div className="space-y-6">
       <PageHeader
-        title="Users"
-        description="Manage registered users on the platform."
+        title="User Accounts"
+        description="Inspect registered customers and system administrators."
         action={
-          <Button size="sm" onClick={openCreate}>
-            <FiPlus size={14} />
-            Add User
+          <Button size="sm" onClick={openCreate} className="shadow-xs">
+            <FiPlus size={15} />
+            Add User Account
           </Button>
         }
       />
@@ -111,39 +111,51 @@ export default function AdminUsers() {
 
       {users.length === 0 ? (
         <EmptyState
-          title="No users"
-          description="Users will appear after registration."
+          icon={FiUsers}
+          title="No users found"
+          description="Users will appear here once they register or are added manually."
           action={<Button size="sm" onClick={openCreate}>Add User</Button>}
         />
       ) : (
-        <Card padding={false}>
+        <Card padding={false} className="overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-border bg-off-white text-xs text-slate-muted">
-                  <th className="px-4 py-3 font-medium">Name</th>
-                  <th className="px-4 py-3 font-medium">Email</th>
-                  <th className="px-4 py-3 font-medium">Phone</th>
-                  <th className="px-4 py-3 font-medium">Role</th>
-                  <th className="px-4 py-3 font-medium">Actions</th>
+                <tr className="border-b border-border bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-secondary-text">
+                  <th className="px-6 py-3.5">Customer Name</th>
+                  <th className="px-4 py-3.5">Email</th>
+                  <th className="px-4 py-3.5">Phone Number</th>
+                  <th className="px-4 py-3.5">System Role</th>
+                  <th className="px-6 py-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-border/60">
                 {users.map((user) => (
-                  <tr key={user.id} className="border-b border-border last:border-0">
-                    <td className="px-4 py-3 font-medium text-navy">{user.name}</td>
-                    <td className="px-4 py-3 text-charcoal">{user.email}</td>
-                    <td className="px-4 py-3 text-charcoal">{user.phoneNumber || '—'}</td>
-                    <td className="px-4 py-3">
+                  <tr key={user.id} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="px-6 py-3.5">
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-rose-50 text-xs font-bold text-primary">
+                          {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                        </div>
+                        <span className="font-heading font-bold text-primary-text">{user.name}</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3.5 text-xs font-medium text-secondary-text">
+                      {user.email}
+                    </td>
+                    <td className="px-4 py-3.5 text-xs text-secondary-text">
+                      {user.phoneNumber || '—'}
+                    </td>
+                    <td className="px-4 py-3.5">
                       <Badge status={user.role}>{user.role}</Badge>
                     </td>
-                    <td className="px-4 py-3">
-                      <div className="flex gap-1">
-                        <Button variant="ghost" size="sm" onClick={() => openEdit(user)}>
-                          <FiEdit2 size={14} />
+                    <td className="px-6 py-3.5 text-right">
+                      <div className="flex justify-end gap-1.5">
+                        <Button variant="ghost" size="sm" onClick={() => openEdit(user)} title="Edit User">
+                          <FiEdit2 size={14} className="text-secondary-text hover:text-primary-text" />
                         </Button>
-                        <Button variant="ghost" size="sm" onClick={() => handleDelete(user.id)}>
-                          <FiTrash2 size={14} />
+                        <Button variant="ghost" size="sm" onClick={() => handleDelete(user.id)} title="Delete User">
+                          <FiTrash2 size={14} className="text-red-500 hover:text-error" />
                         </Button>
                       </div>
                     </td>
@@ -155,30 +167,32 @@ export default function AdminUsers() {
         </Card>
       )}
 
+      {/* User Modal */}
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        title={editing ? 'Edit user' : 'Add user'}
+        title={editing ? 'Edit User Details' : 'Create User Account'}
         footer={
           <ModalActions
             onCancel={() => setModalOpen(false)}
             onConfirm={handleSave}
             loading={saving}
-            confirmLabel={editing ? 'Update' : 'Create'}
+            confirmLabel={editing ? 'Update User' : 'Create Account'}
           />
         }
       >
-        <div className="space-y-3">
-          <Input label="Name" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-          <Input label="Email" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-          <Input label="Phone" required={!editing} value={form.phoneNumber} onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })} />
+        <div className="space-y-4">
+          <Input label="Full Name" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Customer Name" />
+          <Input label="Email Address" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="user@example.com" />
+          <Input label="Phone Number" required={!editing} value={form.phoneNumber} onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })} placeholder="+91 98765 43210" />
           {!editing && (
             <Input
-              label="Password"
+              label="Account Password"
               type="password"
               required
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
+              placeholder="••••••••"
             />
           )}
         </div>

@@ -123,9 +123,9 @@ CinePass/
 | **Movies** | `POST` | `/api/movies` | Create a new movie | Admin |
 | **Theaters** | `GET` | `/api/theaters` | List theater locations & screens | Public |
 | **Shows** | `GET` | `/api/shows/movie/{id}` | Get active showtimes for a movie | Public |
-| **Booking** | `POST` | `/api/bookings/lock-seats` | Lock selected seats for 5 mins | User |
-| **Booking** | `POST` | `/api/bookings/confirm` | Finalize payment & confirm booking | User |
-| **Booking** | `GET` | `/api/bookings/my-bookings` | View authenticated user history | User |
+| **Booking** | `POST` | `/api/bookings/lock` | Lock selected seats for 5 mins | User |
+| **Booking** | `POST` | `/api/bookings/{id}/confirm-payment` | Finalize payment & confirm booking | User |
+| **Booking** | `GET` | `/api/bookings/user/{userId}` | View authenticated user history | User |
 
 *API documentation (Swagger UI) is available at `http://localhost:8080/swagger-ui.html` when running.*
 

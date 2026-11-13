@@ -36,6 +36,12 @@ build/
 node_modules/
 cinepass-frontend/node_modules/
 cinepass-frontend/dist/
+.env
 .env.local
+.env.*.local
+!.env.example
+cinepass-frontend/.env
+cinepass-frontend/.env.local
+!cinepass-frontend/.env.example
 .DS_Store
 

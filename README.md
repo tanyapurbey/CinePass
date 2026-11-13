@@ -15,7 +15,7 @@
 ## 🌐 Live Deployments
 
 - **Live Application (Frontend)**: `[Deploying on Vercel...]` *(URL will be updated upon deployment)*
-- **API Server & Swagger UI (Backend)**: `[Deploying on Render...]` *(URL will be updated upon deployment)*
+- **API Server & Swagger UI (Backend)**: [https://cinepass-2dzp.onrender.com/swagger-ui.html](https://cinepass-2dzp.onrender.com/swagger-ui.html)
 - **Database**: Cloud PostgreSQL on **Supabase**
 
 ---

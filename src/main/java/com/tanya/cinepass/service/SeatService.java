@@ -68,4 +68,3 @@ public class SeatService {
         return seatDto;
     }
 }
-

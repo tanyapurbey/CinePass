@@ -77,7 +77,6 @@ export default function Movies() {
 
       {error && <div className="mb-6"><ErrorAlert message={error} onDismiss={() => setError('')} /></div>}
 
-      {/* Search & Filter Bar */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <form onSubmit={handleSearch} className="flex flex-1 max-w-lg gap-2">
           <div className="relative flex-1">
@@ -104,7 +103,6 @@ export default function Movies() {
           </Button>
         </form>
 
-        {/* Tab Filters */}
         <div className="inline-flex rounded-xl border border-border bg-card-bg p-1 shadow-2xs">
           {tabs.map((t) => (
             <button
@@ -123,7 +121,6 @@ export default function Movies() {
         </div>
       </div>
 
-      {/* Movies Grid */}
       {filtered.length === 0 ? (
         <EmptyState
           icon={FiFilm}

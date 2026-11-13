@@ -14,13 +14,13 @@ public class Seat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; //table
+    private Long id;
 
     @Column(nullable = false)
     private String seatNumber;
 
     @Column(nullable = false)
-    private String seatType; // GOLD , SILVER, PLATINUM
+    private String seatType;
 
     @Column(nullable = false)
     private Double basePrice;
@@ -29,4 +29,3 @@ public class Seat {
     @JoinColumn(name="screen_id",nullable = false)
     private Screen screen;
 }
-

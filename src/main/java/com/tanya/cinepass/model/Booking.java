@@ -35,7 +35,7 @@ public class Booking {
     private Show show;
 
     @Column(nullable = false)
-    private String status;  //CON, CAN, PEN
+    private String status;
 
     @Column(nullable = false)
     private Double totalAmount;
@@ -47,4 +47,3 @@ public class Booking {
     @JoinColumn(name = "payment_id")
     private Payment payment;
 }
-

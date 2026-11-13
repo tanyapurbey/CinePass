@@ -42,10 +42,7 @@ public class BookingService {
         Show show = showRepository.findById(bookingRequest.getShowId())
                 .orElseThrow(()->new ResourceNotFoundException("Show Not Found"));
 
-        // findAllByIdForUpdate issues "SELECT ... FOR UPDATE": the database locks these
-        // exact rows until this transaction commits, so a second, simultaneous booking
-        // request for the same seats physically waits here instead of also reading
-        // "AVAILABLE" and double-booking the seat.
+
         List<ShowSeat> selectedSeats=showSeatRepository.findAllByIdForUpdate(bookingRequest.getSeatIds());
 
         for(ShowSeat seat:selectedSeats)
@@ -62,7 +59,7 @@ public class BookingService {
                 .mapToDouble(ShowSeat::getPrice)
                 .sum();
 
-        //payment
+
         Payment payment=new Payment();
         payment.setAmount(totalAmount);
         payment.setPaymentTime(LocalDateTime.now());
@@ -71,7 +68,7 @@ public class BookingService {
         payment.setTransactionId(UUID.randomUUID().toString());
 
 
-        //booking
+
         Booking booking=new Booking();
         booking.setUser(user);
         booking.setShow(show);
@@ -92,13 +89,7 @@ public class BookingService {
         return mapToBookingDto(saveBooking,selectedSeats);
     }
 
-    /**
-     * STEP 1 of the smart seat-locking workflow: the user has picked seats but has not
-     * paid yet. We lock the seats and create a PENDING booking with no payment attached.
-     * The seats' lockedAt timestamp starts a 5-minute clock (booking.lock.duration.minutes);
-     * SeatUnlockScheduler checks this timestamp every minute and releases any seat whose
-     * hold has expired without payment.
-     */
+
     @Transactional
     public BookingDto lockSeats(BookingRequestDto bookingRequest)
     {
@@ -134,7 +125,7 @@ public class BookingService {
         booking.setUser(user);
         booking.setShow(show);
         booking.setBookingTime(now);
-        booking.setStatus("PENDING"); // awaiting payment -- not yet CONFIRMED
+        booking.setStatus("PENDING");
         booking.setTotalAmount(totalAmount);
         booking.setBookingNumber(UUID.randomUUID().toString());
 
@@ -146,11 +137,7 @@ public class BookingService {
         return mapToBookingDto(savedBooking, selectedSeats);
     }
 
-    /**
-     * STEP 2 of the smart seat-locking workflow: called once the user actually pays.
-     * Confirms the PENDING booking, only if its seats are still LOCKED (i.e. the
-     * 5-minute window hasn't already been swept up by the scheduler).
-     */
+
     @Transactional
     public BookingDto confirmPayment(Long bookingId, String paymentMethod)
     {
@@ -171,8 +158,7 @@ public class BookingService {
         {
             if (!"LOCKED".equals(seat.getStatus()))
             {
-                // The scheduler already released this seat because the 5-minute
-                // window expired before payment arrived.
+
                 throw new SeatUnavailableException("Seat lock has expired. Please select seats again.");
             }
         }
@@ -267,7 +253,7 @@ public class BookingService {
         bookingDto.setStatus(booking.getStatus());
         bookingDto.setTotalAmount(booking.getTotalAmount());
 
-        //user
+
         UserDto userDto=new UserDto();
         userDto.setId(booking.getUser().getId());
         userDto.setName(booking.getUser().getName());

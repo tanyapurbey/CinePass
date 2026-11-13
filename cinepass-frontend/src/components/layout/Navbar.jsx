@@ -38,7 +38,6 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/80 bg-card-bg/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Brand Logo */}
         <Link to="/" className="group flex items-center gap-2.5" title="Go to Home">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white shadow-xs transition-transform duration-200 group-hover:scale-105">
             <FiFilm size={18} />
@@ -48,7 +47,6 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
         <nav className="hidden items-center gap-2 md:flex">
           {isAuthenticated ? (
             <>
@@ -116,7 +114,6 @@ export default function Navbar() {
           )}
         </nav>
 
-        {/* Mobile Hamburger */}
         <button
           type="button"
           className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-primary-text md:hidden"
@@ -127,7 +124,6 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Drawer */}
       {mobileOpen && (
         <div className="border-b border-border bg-card-bg px-4 pt-2 pb-5 md:hidden">
           <nav className="space-y-1">

@@ -37,7 +37,6 @@ export default function Register() {
   return (
     <div className="flex min-h-[calc(100vh-12rem)] items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
-        {/* Brand Icon & Heading */}
         <div className="mb-8 text-center space-y-2">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-primary shadow-xs">
             <FiFilm size={24} />
@@ -50,7 +49,6 @@ export default function Register() {
           </p>
         </div>
 
-        {/* Card Form */}
         <div className="rounded-3xl border border-border bg-card-bg p-7 sm:p-8 shadow-xl shadow-slate-900/5">
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && <ErrorAlert message={error} onDismiss={() => setError('')} />}

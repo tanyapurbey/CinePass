@@ -78,14 +78,12 @@ export default function SeatSelection() {
 
       {error && <div className="mb-4"><ErrorAlert message={error} onDismiss={() => setError('')} /></div>}
 
-      {/* Show Info Badges */}
       <div className="grid gap-3 sm:grid-cols-3">
         <Info icon={FiClock} label="Showtime" value={formatDateTime(show?.startTime)} />
         <Info icon={FiMapPin} label="Theatre" value={theater?.name} />
         <Info icon={FiFilm} label="Screen" value={show?.screen?.name} />
       </div>
 
-      {/* Main Seat Grid Card */}
       <Card className="py-8 shadow-md">
         <SeatGrid
           seats={seats}
@@ -94,7 +92,6 @@ export default function SeatSelection() {
         />
       </Card>
 
-      {/* Checkout Bar */}
       <Card className="border-slate-300 shadow-md">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>

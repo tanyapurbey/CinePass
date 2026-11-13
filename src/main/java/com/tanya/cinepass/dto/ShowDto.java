@@ -28,4 +28,3 @@ public class ShowDto {
 
     private List<ShowSeatDto> availableSeats;
 }
-

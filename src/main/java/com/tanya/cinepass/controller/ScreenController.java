@@ -38,4 +38,3 @@ public class ScreenController {
         return ResponseEntity.ok(screenService.getScreenById(screenId));
     }
 }
-

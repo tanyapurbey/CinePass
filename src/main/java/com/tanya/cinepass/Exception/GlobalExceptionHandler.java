@@ -19,8 +19,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<?> authenticationException(AuthenticationException ex, WebRequest request)
     {
-        // Thrown by AuthenticationManager.authenticate(...) in AuthController.login()
-        // when the email doesn't exist or the password doesn't match the stored hash.
+
         ErrorResponse errorDetails=new ErrorResponse(new Date(), HttpStatus.UNAUTHORIZED.value(),
                 "Unauthorized","Invalid email or password",request.getDescription(false));
         return new ResponseEntity<>(errorDetails,HttpStatus.UNAUTHORIZED);
@@ -29,9 +28,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<?> accessDeniedException(AccessDeniedException ex, WebRequest request)
     {
-        // Thrown when a @PreAuthorize check fails -- e.g. a logged-in USER calling an
-        // ADMIN-only endpoint like POST /api/movies. The token is valid, the caller is
-        // just not allowed to do this particular action.
+
         ErrorResponse errorDetails=new ErrorResponse(new Date(), HttpStatus.FORBIDDEN.value(),
                 "Forbidden","You do not have permission to perform this action",request.getDescription(false));
         return new ResponseEntity<>(errorDetails,HttpStatus.FORBIDDEN);
@@ -89,4 +86,3 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
-

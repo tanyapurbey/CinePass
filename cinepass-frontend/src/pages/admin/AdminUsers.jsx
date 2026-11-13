@@ -167,7 +167,6 @@ export default function AdminUsers() {
         </Card>
       )}
 
-      {/* User Modal */}
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}

@@ -19,7 +19,7 @@ public class Screen {
     private Long id;
 
     @Column(nullable = false)
-    public String name; //audi-1 //audi-2
+    public String name;
 
     private Integer totalSeats;
 

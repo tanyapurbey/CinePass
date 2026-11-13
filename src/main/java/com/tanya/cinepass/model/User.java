@@ -16,7 +16,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; //table
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -38,4 +38,3 @@ public class User {
     private List<Booking> bookings;
 
 }
-

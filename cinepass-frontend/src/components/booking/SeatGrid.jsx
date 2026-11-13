@@ -31,7 +31,6 @@ export default function SeatGrid({ seats, selectedIds, onToggle, readOnly = fals
 
   return (
     <div className="space-y-8">
-      {/* Cinema Screen Indicator with Curve & Ambient Light */}
       <div className="relative mx-auto max-w-lg text-center pt-2">
         <div className="h-2 w-full rounded-full bg-gradient-to-r from-slate-200 via-primary/50 to-slate-200 shadow-[0_4px_16px_rgba(225,29,72,0.25)]" />
         <p className="mt-2 text-[11px] font-bold tracking-widest text-secondary-text uppercase">
@@ -39,7 +38,6 @@ export default function SeatGrid({ seats, selectedIds, onToggle, readOnly = fals
         </p>
       </div>
 
-      {/* Seats Matrix */}
       <div className="flex flex-wrap justify-center gap-2.5 max-w-2xl mx-auto p-4 rounded-2xl bg-slate-50/60 border border-border/80">
         {seats.map((showSeat) => {
           const seatNumber = showSeat.seat?.seatNumber || showSeat.seatNumber
@@ -64,7 +62,6 @@ export default function SeatGrid({ seats, selectedIds, onToggle, readOnly = fals
         })}
       </div>
 
-      {/* Seating Legend */}
       {!readOnly && (
         <div className="flex flex-wrap items-center justify-center gap-6 rounded-xl border border-border/80 bg-card-bg px-5 py-3 text-xs font-semibold text-secondary-text shadow-2xs">
           <span className="flex items-center gap-2">

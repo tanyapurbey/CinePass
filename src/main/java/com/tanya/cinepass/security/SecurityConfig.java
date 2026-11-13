@@ -30,10 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * SecurityConfig manages authentication, stateless JWT session filters,
- * method-level security roles, and Cross-Origin Resource Sharing (CORS).
- */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
@@ -68,14 +64,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // Enable CORS with our custom configuration source
+
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-                // CSRF is disabled because authentication is stateless and token-based (Bearer JWT)
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        // Public endpoints
+
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/api/movies/**",
@@ -85,7 +80,7 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-                        // Protected endpoints requiring authenticated token
+
                         .anyRequest().authenticated()
                 )
 

@@ -49,10 +49,7 @@ public class ShowService {
 
         Show savedShow=showRepository.save(show);
 
-        // A Show is only bookable if it has ShowSeat rows -- one per physical Seat on
-        // this screen. Without this step, a freshly created show would have zero seats
-        // for anyone to ever select, since BookingService only ever reads/locks
-        // existing ShowSeat rows, it never creates them.
+
         List<Seat> physicalSeats = screen.getSeats();
         List<ShowSeat> generatedSeats = new ArrayList<>();
         if (physicalSeats != null)
@@ -181,4 +178,3 @@ public class ShowService {
         return showDto;
     }
 }
-

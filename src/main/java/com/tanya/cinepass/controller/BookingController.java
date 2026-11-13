@@ -21,11 +21,7 @@ public class BookingController {
 
     private final BookingService bookingService;
 
-    /**
-     * Legacy one-shot endpoint: locks seats AND takes payment in a single call.
-     * Kept for backward compatibility. New clients should prefer /lock followed
-     * by /{id}/confirm-payment, which gives the user time to actually pay.
-     */
+
     @PostMapping
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<BookingDto> createBooking(@Valid @RequestBody BookingRequestDto bookingRequest)
@@ -33,7 +29,7 @@ public class BookingController {
         return new ResponseEntity<>(bookingService.createBooking(bookingRequest), HttpStatus.CREATED);
     }
 
-    /** Step 1 of the smart seat-locking flow: reserve seats, start the 5-minute timer. */
+
     @PostMapping("/lock")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<BookingDto> lockSeats(@Valid @RequestBody BookingRequestDto bookingRequest)
@@ -41,7 +37,7 @@ public class BookingController {
         return new ResponseEntity<>(bookingService.lockSeats(bookingRequest), HttpStatus.CREATED);
     }
 
-    /** Step 2 of the smart seat-locking flow: pay for a still-locked booking to confirm it. */
+
     @PostMapping("/{id}/confirm-payment")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<BookingDto> confirmPayment(@PathVariable Long id, @Valid @RequestBody PaymentRequestDto paymentRequest)
@@ -77,4 +73,3 @@ public class BookingController {
         return ResponseEntity.ok(bookingService.getBookingByUserId(userId));
     }
 }
-

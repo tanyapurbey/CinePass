@@ -46,4 +46,3 @@ public class SeatController {
         return ResponseEntity.noContent().build();
     }
 }
-

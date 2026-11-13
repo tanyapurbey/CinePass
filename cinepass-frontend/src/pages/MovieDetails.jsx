@@ -66,7 +66,6 @@ export default function MovieDetails() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
-      {/* Back button */}
       <Link to="/movies" className="inline-flex items-center gap-1.5 text-xs font-bold text-secondary-text hover:text-primary transition-colors">
         <FiArrowLeft size={14} /> Back to Movies Catalog
       </Link>
@@ -74,7 +73,6 @@ export default function MovieDetails() {
       {error && <div className="mb-6"><ErrorAlert message={error} onDismiss={() => setError('')} /></div>}
 
       <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
-        {/* Movie Poster Showcase */}
         <div className="mx-auto w-full max-w-[260px] lg:max-w-none">
           <div className="aspect-[2/3] overflow-hidden rounded-2xl border border-border bg-slate-900 shadow-xl shadow-slate-900/10">
             {movie.posterUrl ? (
@@ -92,14 +90,12 @@ export default function MovieDetails() {
           </div>
         </div>
 
-        {/* Movie Info & Shows */}
         <div className="space-y-6">
           <div>
             <h1 className="font-heading text-3xl font-extrabold text-primary-text sm:text-4xl">
               {movie.title}
             </h1>
 
-            {/* Metadata Pills */}
             <div className="mt-3 flex flex-wrap items-center gap-2 text-xs font-semibold">
               {movie.genre && (
                 <span className="rounded-lg bg-slate-100 px-3 py-1 text-slate-700">
@@ -130,7 +126,6 @@ export default function MovieDetails() {
             </p>
           )}
 
-          {/* Show Selection Bar */}
           <div className="border-t border-border/80 pt-6 space-y-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
@@ -154,7 +149,6 @@ export default function MovieDetails() {
               )}
             </div>
 
-            {/* Grouped Shows by Theatre */}
             {shows.length === 0 ? (
               <EmptyState
                 icon={FiCalendar}

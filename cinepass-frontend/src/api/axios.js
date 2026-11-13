@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { TOKEN_KEY, USER_KEY } from '../utils/constants'
 
-// If VITE_API_BASE_URL is set (production), use it; otherwise fallback to '/api' (local Vite proxy)
 const rawBaseUrl = import.meta.env.VITE_API_BASE_URL || ''
 const baseURL = rawBaseUrl
   ? (rawBaseUrl.endsWith('/api') ? rawBaseUrl : `${rawBaseUrl.replace(/\/$/, '')}/api`)

@@ -8,13 +8,11 @@ export default function Landing() {
 
   return (
     <div className="space-y-16 sm:space-y-24 pb-16">
-      {/* Hero Section */}
       <section className="relative overflow-hidden border-b border-border/80 bg-gradient-to-b from-card-bg via-main-bg to-main-bg pt-12 pb-20 sm:pt-20 sm:pb-28">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-rose-100/40 via-transparent to-transparent pointer-events-none" />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
-            {/* Left Content */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 rounded-full border border-rose-200 bg-rose-50 px-3.5 py-1 text-xs font-bold text-primary">
                 <span className="flex h-2 w-2 rounded-full bg-primary" />
@@ -70,7 +68,6 @@ export default function Landing() {
               </div>
             </div>
 
-            {/* Right Showcase Card */}
             <div className="lg:col-span-5">
               <div className="relative mx-auto max-w-md rounded-3xl border border-border bg-card-bg p-6 sm:p-8 shadow-xl shadow-slate-900/5">
                 <div className="flex items-center justify-between border-b border-border/80 pb-4">
@@ -106,7 +103,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* 3-Step Process Section */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-xl mx-auto space-y-2">
           <p className="text-xs font-bold uppercase tracking-wider text-primary">Simple & Fast</p>

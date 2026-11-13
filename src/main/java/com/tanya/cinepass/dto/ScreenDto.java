@@ -17,4 +17,3 @@ public class ScreenDto {
     private Integer totalSeats;
     private TheaterDto theater;
 }
-

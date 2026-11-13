@@ -206,7 +206,6 @@ export default function AdminTheaters() {
       {error && <div className="mb-6"><ErrorAlert message={error} onDismiss={() => setError('')} /></div>}
 
       <div className="grid gap-6 lg:grid-cols-12">
-        {/* Left Column: All Theatres */}
         <div className="lg:col-span-6">
           <Card padding={false} className="overflow-hidden shadow-sm">
             <div className="border-b border-border bg-slate-50/70 px-5 py-3.5 flex items-center justify-between">
@@ -249,11 +248,9 @@ export default function AdminTheaters() {
           </Card>
         </div>
 
-        {/* Right Column: Screens & Seats */}
         <div className="lg:col-span-6 space-y-5">
           {selectedTheater ? (
             <>
-              {/* Screens Card */}
               <Card className="shadow-sm">
                 <div className="mb-4 flex items-center justify-between border-b border-border/80 pb-3">
                   <div>
@@ -295,7 +292,6 @@ export default function AdminTheaters() {
                 )}
               </Card>
 
-              {/* Seats Card */}
               {selectedScreen && (
                 <Card className="shadow-sm">
                   <div className="mb-4 flex items-center justify-between border-b border-border/80 pb-3">
@@ -345,7 +341,6 @@ export default function AdminTheaters() {
         </div>
       </div>
 
-      {/* Modals */}
       <Modal
         open={theaterModal}
         onClose={() => setTheaterModal(false)}

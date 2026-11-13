@@ -13,4 +13,3 @@ public class AuthResponseDto {
     private String email;
     private String role;
 }
-

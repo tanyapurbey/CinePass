@@ -23,4 +23,3 @@ public class TheaterDto {
     private Integer totalScreens;
 
 }
-

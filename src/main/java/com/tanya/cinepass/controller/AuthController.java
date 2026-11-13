@@ -36,27 +36,14 @@ public class AuthController {
 
     private final JwtUtil jwtUtil;
 
-    /**
-     * Public registration endpoint. Delegates straight to the existing UserService,
-     * which now hashes the password and assigns Role.USER before saving.
-     */
+
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@Valid @RequestBody UserRegistrationDto registrationDto)
     {
         return new ResponseEntity<>(userService.createUser(registrationDto), HttpStatus.CREATED);
     }
 
-    /**
-     * Login flow:
-     * 1. authenticationManager.authenticate(...) triggers DaoAuthenticationProvider,
-     *    which calls CustomUserDetailsService to load the user by email, then uses
-     *    PasswordEncoder.matches(...) to compare the submitted password against the
-     *    stored BCrypt hash. If they don't match, it throws BadCredentialsException
-     *    automatically (handled by GlobalExceptionHandler).
-     * 2. If authentication succeeds, we know the credentials are correct, so we mint
-     *    a JWT for this user and hand it back. The client stores this token and sends
-     *    it as "Authorization: Bearer <token>" on every subsequent request.
-     */
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDto loginRequest)
     {
@@ -76,9 +63,7 @@ public class AuthController {
             );
             return ResponseEntity.ok(response);
         } catch (AuthenticationException ex) {
-            // Caught locally rather than left to GlobalExceptionHandler: Spring Security's
-            // ExceptionTranslationFilter would otherwise intercept AuthenticationException
-            // before it reaches our @ControllerAdvice, giving an empty default response.
+
             Map<String, Object> body = new HashMap<>();
             body.put("timestamp", new Date());
             body.put("status", HttpStatus.UNAUTHORIZED.value());
@@ -88,4 +73,3 @@ public class AuthController {
         }
     }
 }
-

@@ -65,9 +65,7 @@ export default function BookingDetail() {
 
       {error && <div className="mb-6"><ErrorAlert message={error} /></div>}
 
-      {/* Ticket Card */}
       <div className="overflow-hidden rounded-3xl border border-border bg-card-bg shadow-lg shadow-slate-900/5">
-        {/* Ticket Header */}
         <div className="border-b border-border/80 bg-slate-50/70 px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-white">
@@ -78,7 +76,6 @@ export default function BookingDetail() {
           <span className="font-mono text-xs font-bold text-secondary-text">#{booking.bookingNumber}</span>
         </div>
 
-        {/* Ticket Body */}
         <div className="p-6 space-y-4">
           <Row label="Movie Title" value={booking.show?.movie?.title} bold />
           <Row label="Showtime" value={formatDateTime(booking.show?.startTime)} />
@@ -102,7 +99,6 @@ export default function BookingDetail() {
         </div>
       </div>
 
-      {/* Seat Allocation Preview */}
       {booking.seats?.length > 0 && (
         <Card className="space-y-4">
           <div className="flex items-center justify-between border-b border-border/60 pb-3">
@@ -120,7 +116,6 @@ export default function BookingDetail() {
         </Card>
       )}
 
-      {/* Cancellation Action */}
       {(booking.status === 'CONFIRMED' || booking.status === 'PENDING') && (
         <div className="pt-2">
           <Button variant="danger" size="md" loading={cancelling} onClick={handleCancel}>

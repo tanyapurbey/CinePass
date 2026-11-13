@@ -9,16 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-/**
- * Spring Security calls loadUserByUsername(...) in two places in this project:
- *   1. Inside AuthenticationManager.authenticate(...) during login, to fetch the
- *      stored (hashed) password and compare it against what the user typed.
- *   2. Inside JwtAuthFilter on every protected request, to reload the user's current
- *      roles/details so SecurityContext has a fully-formed Authentication object.
- *
- * "Username" here is really the user's email, since that's what this project uses
- * as the unique login identifier.
- */
+
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -32,4 +23,3 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new UserPrincipal(user);
     }
 }
-

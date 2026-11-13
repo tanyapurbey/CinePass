@@ -11,4 +11,3 @@ public class SeatUnavailableException extends RuntimeException{
         super(message);
     }
 }
-

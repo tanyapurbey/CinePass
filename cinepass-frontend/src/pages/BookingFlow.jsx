@@ -79,7 +79,7 @@ export default function BookingFlow() {
     setError('Your 5-minute seat lock duration has expired. Please select seats again.')
     if (booking) {
       bookingService.cancel(booking.id).catch(() => {
-        // best-effort release
+
       })
     }
   }
@@ -93,7 +93,7 @@ export default function BookingFlow() {
       try {
         await bookingService.cancel(booking.id)
       } catch {
-        // best-effort release
+
       }
     }
     setBooking(null)
@@ -104,7 +104,6 @@ export default function BookingFlow() {
 
   return (
     <div className="mx-auto max-w-lg px-4 py-8 sm:px-6 lg:px-8 space-y-6">
-      {/* Steps Pill */}
       <div className="flex items-center justify-center gap-2 text-xs font-bold text-secondary-text">
         <span className={`flex items-center gap-1.5 px-3 py-1 rounded-full ${step === 'review' ? 'bg-primary text-white' : 'bg-slate-100 text-slate-700'}`}>
           1. Review
@@ -127,7 +126,6 @@ export default function BookingFlow() {
 
       {error && <div className="mb-4"><ErrorAlert message={error} onDismiss={() => setError('')} /></div>}
 
-      {/* Ticket Details Summary Card */}
       <Card className="space-y-3.5 shadow-sm border-slate-300">
         <div className="flex items-center justify-between border-b border-border/80 pb-3">
           <span className="font-heading text-xs font-bold uppercase tracking-wider text-secondary-text">Screening Details</span>
@@ -159,7 +157,6 @@ export default function BookingFlow() {
         </div>
       </Card>
 
-      {/* Step 2: Payment Options Card */}
       {step === 'payment' && (
         <Card className="space-y-4 shadow-sm border-slate-300">
           <div className="flex items-center gap-2 border-b border-border/80 pb-3">
@@ -197,7 +194,6 @@ export default function BookingFlow() {
         </Card>
       )}
 
-      {/* Action Buttons */}
       <div className="flex gap-3 pt-2">
         <Button
           variant="secondary"

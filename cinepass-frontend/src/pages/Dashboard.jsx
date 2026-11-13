@@ -60,7 +60,6 @@ export default function Dashboard() {
 
       {error && <div className="mb-6"><ErrorAlert message={error} /></div>}
 
-      {/* Metrics Section */}
       <div className="grid gap-5 sm:grid-cols-3">
         <StatCard
           icon={FiFilm}
@@ -82,7 +81,6 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* Now Showing Section */}
       <section className="space-y-4">
         <div className="flex items-center justify-between border-b border-border/80 pb-3">
           <div>

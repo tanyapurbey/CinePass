@@ -17,7 +17,7 @@ public class Show {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; //table
+    private Long id;
 
     @Column(nullable = false)
     private LocalDateTime startTime;
@@ -39,5 +39,3 @@ public class Show {
     @OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
     private List<Booking> bookings;
 }
-
-

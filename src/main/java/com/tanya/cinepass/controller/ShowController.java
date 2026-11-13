@@ -60,4 +60,3 @@ public class ShowController {
         return ResponseEntity.ok(showService.getShowsByDateRange(start, end));
     }
 }
-

@@ -16,7 +16,7 @@ public class Theater {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; //table
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -28,4 +28,3 @@ public class Theater {
     @OneToMany(mappedBy = "theater",cascade = CascadeType.ALL)
     private List<Screen> screens;
 }
-

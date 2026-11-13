@@ -59,4 +59,3 @@ public class TheaterController {
         return ResponseEntity.noContent().build();
     }
 }
-

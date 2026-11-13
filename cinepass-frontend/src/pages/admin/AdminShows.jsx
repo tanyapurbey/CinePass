@@ -167,7 +167,6 @@ export default function AdminShows() {
         </Card>
       )}
 
-      {/* Schedule Show Modal */}
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}

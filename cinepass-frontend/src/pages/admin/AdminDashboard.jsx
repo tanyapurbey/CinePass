@@ -42,7 +42,7 @@ export default function AdminDashboard() {
             const { data } = await bookingService.getByUser(u.id)
             allBookings.push(...data)
           } catch {
-            // skip users with no access
+
           }
         }
 
@@ -93,7 +93,6 @@ export default function AdminDashboard() {
 
       {error && <div className="mb-6"><ErrorAlert message={error} /></div>}
 
-      {/* Metrics Row */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {statCards.map((stat) => (
           <Link key={stat.label} to={stat.to} className="group block">
@@ -112,7 +111,6 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      {/* Recent Bookings Table */}
       <Card className="p-0 overflow-hidden shadow-sm">
         <div className="flex items-center justify-between border-b border-border/80 px-6 py-4.5 bg-slate-50/50">
           <div>

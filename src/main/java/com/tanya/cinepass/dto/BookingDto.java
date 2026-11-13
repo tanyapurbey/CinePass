@@ -22,4 +22,3 @@ public class BookingDto {
     private List<ShowSeatDto> seats;
     private PaymentDto payment;
 }
-

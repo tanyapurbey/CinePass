@@ -189,7 +189,6 @@ export default function AdminMovies() {
         </Card>
       )}
 
-      {/* Add / Edit Movie Modal */}
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}

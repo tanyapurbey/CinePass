@@ -6,12 +6,10 @@ export default function Modal({ open, onClose, title, children, footer }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
       <div
         className="fixed inset-0 bg-sidebar/50 backdrop-blur-xs transition-opacity"
         onClick={onClose}
       />
-      {/* Modal Dialog */}
       <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-card-bg shadow-2xl transition-all duration-200">
         <div className="flex items-center justify-between border-b border-border px-6 py-4.5">
           <h3 className="font-heading text-base font-bold text-primary-text">{title}</h3>

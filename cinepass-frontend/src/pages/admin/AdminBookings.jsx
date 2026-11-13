@@ -30,7 +30,7 @@ export default function AdminBookings() {
           const { data } = await bookingService.getByUser(user.id)
           allBookings.push(...data)
         } catch {
-          // continue
+
         }
       }
       allBookings.sort(
@@ -93,7 +93,6 @@ export default function AdminBookings() {
 
       {error && <div className="mb-6"><ErrorAlert message={error} onDismiss={() => setError('')} /></div>}
 
-      {/* Search Bar */}
       <form onSubmit={handleSearch} className="flex max-w-md gap-2">
         <div className="relative flex-1">
           <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary-text" size={16} />
@@ -125,7 +124,6 @@ export default function AdminBookings() {
         </Button>
       </form>
 
-      {/* Bookings Table */}
       {bookings.length === 0 ? (
         <EmptyState
           icon={FiClipboard}

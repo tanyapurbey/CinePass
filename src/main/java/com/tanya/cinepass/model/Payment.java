@@ -31,7 +31,7 @@ public class Payment {
     private String paymentMethod;
 
     @Column(nullable = false)
-    private String status; //SUCCESS,FAILED,PENDING
+    private String status;
 
     @OneToOne(mappedBy = "payment")
     private Booking booking;

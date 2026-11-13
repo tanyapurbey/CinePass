@@ -18,4 +18,3 @@ public interface ShowRepository extends JpaRepository<Show,Long>
     List<Show> findByMovie_IdAndScreen_Theater_City(Long moiveId,String city);
 
 }
-

@@ -43,7 +43,6 @@ export default function AdminLayout() {
 
   const sidebar = (
     <div className="flex h-full flex-col bg-sidebar text-slate-300">
-      {/* Brand Header */}
       <div className="flex items-center gap-2.5 border-b border-slate-800/80 px-5 py-5">
         <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-white shadow-xs">
           <FiFilm size={16} />
@@ -57,7 +56,6 @@ export default function AdminLayout() {
         </div>
       </div>
 
-      {/* Nav List */}
       <nav className="flex-1 space-y-1.5 p-3.5">
         <p className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">
           Management
@@ -76,7 +74,6 @@ export default function AdminLayout() {
         ))}
       </nav>
 
-      {/* Footer / Actions */}
       <div className="border-t border-slate-800/80 p-3.5 space-y-1">
         <button
           type="button"
@@ -100,12 +97,10 @@ export default function AdminLayout() {
 
   return (
     <div className="flex min-h-screen bg-main-bg">
-      {/* Desktop Sidebar */}
       <aside className="hidden w-64 shrink-0 border-r border-slate-800/80 md:block">
         <div className="fixed inset-y-0 w-64">{sidebar}</div>
       </aside>
 
-      {/* Mobile Drawer */}
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 flex md:hidden">
           <div
@@ -116,9 +111,7 @@ export default function AdminLayout() {
         </div>
       )}
 
-      {/* Main Content Area */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        {/* Top Header */}
         <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-border bg-card-bg/90 px-4 sm:px-6 backdrop-blur-md">
           <button
             type="button"

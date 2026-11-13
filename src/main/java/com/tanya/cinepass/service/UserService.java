@@ -29,12 +29,9 @@ public class UserService {
         user.setName(registrationDto.getName());
         user.setEmail(registrationDto.getEmail());
         user.setPhoneNumber(registrationDto.getPhoneNumber());
-        // BCrypt-hash the password before it ever touches the database. encode() generates
-        // a random salt internally and returns "$2a$10$<salt><hash>" -- never the raw text.
+
         user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
-        // Public self-registration always creates a regular USER account.
-        // ADMIN accounts are seeded separately (see DataInitializer) -- an API that lets
-        // anyone register as ADMIN would be a serious privilege-escalation hole.
+
         user.setRole(Role.USER);
         User savedUser=userRepository.save(user);
         return mapToDto(savedUser);
@@ -87,4 +84,3 @@ public class UserService {
 
     }
 }
-

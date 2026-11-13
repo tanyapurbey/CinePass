@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class ShowSeat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; //table
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "show_id",nullable = false)
@@ -35,15 +35,10 @@ public class ShowSeat {
     @JoinColumn(name = "booking_id")
     private Booking booking;
 
-    // Timestamp set when a seat transitions to LOCKED.
-    // The scheduler compares this to "now" to find seats whose 5-minute hold has expired.
+
     private LocalDateTime lockedAt;
 
-    // Optimistic-locking version column. Hibernate auto-increments this on every UPDATE
-    // and checks it hasn't changed since the row was read; if two transactions try to
-    // update the same seat at once, the second one fails fast instead of silently
-    // overwriting the first -- this is a second, complementary safety net on top of the
-    // pessimistic row lock used in BookingService.
+
     @Version
     private Long version;
 

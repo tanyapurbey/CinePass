@@ -31,5 +31,3 @@ import java.util.List;
         @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL)
         private List<Show> shows;
     }
-
-

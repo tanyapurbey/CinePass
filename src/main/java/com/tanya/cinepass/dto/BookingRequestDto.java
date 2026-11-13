@@ -22,8 +22,6 @@ public class BookingRequestDto {
     @NotEmpty(message = "At least one seat must be selected")
     private List<Long> seatIds;
 
-    // Only required by /api/bookings (legacy one-shot) and /api/bookings/{id}/confirm-payment;
-    // /api/bookings/lock ignores this field, so it is intentionally left unvalidated here.
+
     private String paymentMethod;
 }
-

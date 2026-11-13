@@ -24,4 +24,3 @@ public class UserRegistrationDto {
     @NotBlank(message = "Phone number is required")
     private String phoneNumber;
 }
-

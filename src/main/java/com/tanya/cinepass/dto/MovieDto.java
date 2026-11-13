@@ -26,4 +26,3 @@ public class MovieDto {
     private String releaseDate;
     private String posterUrl;
 }
-

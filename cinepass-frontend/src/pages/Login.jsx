@@ -43,7 +43,6 @@ export default function Login() {
   return (
     <div className="flex min-h-[calc(100vh-12rem)] items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
-        {/* Brand Icon & Heading */}
         <div className="mb-6 text-center space-y-2">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-primary shadow-xs">
             <FiFilm size={24} />
@@ -56,7 +55,6 @@ export default function Login() {
           </p>
         </div>
 
-        {/* 1-Click Demo Admin Banner */}
         <div className="mb-5 rounded-2xl border border-rose-200/80 bg-rose-50/70 p-4 text-xs shadow-2xs">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-1.5 font-bold text-primary">
@@ -78,7 +76,6 @@ export default function Login() {
           </button>
         </div>
 
-        {/* Card Form */}
         <div className="rounded-3xl border border-border bg-card-bg p-7 sm:p-8 shadow-xl shadow-slate-900/5">
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && <ErrorAlert message={error} onDismiss={() => setError('')} />}

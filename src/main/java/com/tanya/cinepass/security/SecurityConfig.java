@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -19,19 +20,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
- * @EnableWebSecurity turns on Spring Security's web support and gives us access to
- * customize the SecurityFilterChain bean below (this replaces Spring Boot's default
- * "lock down everything with a generated password" behavior).
- *
- * @EnableMethodSecurity(prePostEnabled = true) turns on @PreAuthorize/@PostAuthorize
- * annotations on controller and service methods, which is how we implement per-endpoint
- * role checks like @PreAuthorize("hasRole('ADMIN')").
+ * SecurityConfig manages authentication, stateless JWT session filters,
+ * method-level security roles, and Cross-Origin Resource Sharing (CORS).
  */
 @Configuration
 @EnableWebSecurity
@@ -43,24 +44,14 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
 
-    /**
-     * BCrypt is a one-way, salted hashing algorithm built specifically for passwords.
-     * "One-way" means there's no decrypt operation -- to check a login, we hash the
-     * typed password again and compare hashes, we never reverse the stored hash.
-     * The built-in salt (random per-password) means two users with the same password
-     * get completely different stored hashes, which defeats rainbow-table attacks.
-     */
+    @Value("${cors.allowed.origins}")
+    private String allowedOrigins;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * DaoAuthenticationProvider is Spring Security's built-in strategy for
-     * "look up the user via UserDetailsService, then compare the submitted password
-     * against the stored (hashed) one using the PasswordEncoder". This is what actually
-     * runs when AuthenticationManager.authenticate(...) is called from AuthController.
-     */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -69,11 +60,6 @@ public class SecurityConfig {
         return provider;
     }
 
-    /**
-     * Exposes Spring's AuthenticationManager as a bean so AuthController can inject it
-     * and call .authenticate(...) during login, instead of us manually comparing
-     * passwords (which would bypass all of Spring Security's protections).
-     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
@@ -82,50 +68,66 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // CSRF protection is a browser-session/cookie concern. Since this API is
-                // stateless and uses a Bearer token (not cookies) for auth, CSRF doesn't
-                // apply and must be disabled or every POST/PUT/DELETE would be rejected.
+                // Enable CORS with our custom configuration source
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+                // CSRF is disabled because authentication is stateless and token-based (Bearer JWT)
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        // Only registration and login are reachable without a token.
-                        .requestMatchers("/api/auth/**",
+                        // Public endpoints
+                        .requestMatchers(
+                                "/api/auth/**",
                                 "/api/movies/**",
                                 "/api/shows/**",
+                                "/api/theaters/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html").permitAll()
-                        // Every other endpoint requires a valid, authenticated JWT.
-                        // Fine-grained ADMIN-vs-USER checks are then layered on top via
-                        // @PreAuthorize on individual controller methods.
+                                "/swagger-ui.html"
+                        ).permitAll()
+                        // Protected endpoints requiring authenticated token
                         .anyRequest().authenticated()
                 )
 
-                // STATELESS tells Spring Security: never create or read an HttpSession.
-                // Each request must carry its own proof of identity (the JWT) because we
-                // are not keeping any server-side login state between requests.
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authenticationProvider(authenticationProvider())
 
-                // Called when an unauthenticated request hits a protected endpoint
-                // (missing token, expired token, malformed token).
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint((request, response, authException) ->
                                 writeJsonError(response, HttpServletResponse.SC_UNAUTHORIZED,
                                         "Unauthorized", "A valid JWT is required to access this resource"))
-                        // Called when a valid, authenticated request is rejected by a
-                        // @PreAuthorize check (right token, wrong role).
                         .accessDeniedHandler(accessDeniedHandler())
                 )
 
-                // Insert our JWT filter BEFORE Spring's default username/password filter,
-                // so that by the time any built-in filter or our controllers run, the
-                // SecurityContext is already populated from the token (if one was valid).
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        List<String> origins = Arrays.stream(allowedOrigins.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .toList();
+
+        if (origins.contains("*")) {
+            configuration.addAllowedOriginPattern("*");
+        } else {
+            configuration.setAllowedOrigins(origins);
+        }
+
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
@@ -147,4 +149,3 @@ public class SecurityConfig {
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));
     }
 }
-
